@@ -18,10 +18,10 @@ export const OLD_PRICES: Record<Exclude<Plan, "wheel">, number> = { app: 73.5, b
 
 /** Links de checkout Hotmart por faixa (preenchidos com as ofertas em espanhol). */
 export const CHECKOUT: Record<Plan, Record<Tier, string>> = {
-  app: { a: "https://pay.hotmart.com/D108191439E", b: "https://pay.hotmart.com/D108191439E?off=tz9coki9" },
-  book: { a: "https://pay.hotmart.com/W108191450G", b: "https://pay.hotmart.com/W108191450G?off=jxx1kntk" },
-  bundle: { a: "https://pay.hotmart.com/V108191423Y", b: "https://pay.hotmart.com/V108191423Y?off=ql80b8og" },
-  wheel: { a: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3", b: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3" },
+  app: { a: "https://pay.hotmart.com/D108191439E?checkoutMode=10", b: "https://pay.hotmart.com/D108191439E?off=tz9coki9&checkoutMode=10" },
+  book: { a: "https://pay.hotmart.com/W108191450G?checkoutMode=10", b: "https://pay.hotmart.com/W108191450G?off=jxx1kntk&checkoutMode=10" },
+  bundle: { a: "https://pay.hotmart.com/V108191423Y?checkoutMode=10", b: "https://pay.hotmart.com/V108191423Y?off=ql80b8og&checkoutMode=10" },
+  wheel: { a: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3&checkoutMode=10", b: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3&checkoutMode=10" },
 };
 
 /** Moeda local por país (código ISO, símbolo exibido). */
