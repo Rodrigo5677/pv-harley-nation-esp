@@ -26,6 +26,7 @@ import phoneEngineAsset from "@/assets/app/phone-engine.png.asset.json";
 import phoneSearchAsset from "@/assets/app/phone-search.png.asset.json";
 import phoneHeatAsset from "@/assets/app/phone-heat.png.asset.json";
 import ExitIntentWheel from "@/components/ExitIntentWheel";
+import { CHECKOUT, OLD_PRICES, PRICES, fmtUsd, useGeo } from "@/lib/precio";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import t1Asset from "@/assets/testimonials/t1.png.asset.json";
 import t2Asset from "@/assets/testimonials/t2.png.asset.json";
@@ -38,20 +39,20 @@ import t6Asset from "@/assets/testimonials/t6.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Harley Mechanic's Vault | Workshop Manual Bundle" },
+      { title: "El Búnker del Mecánico Harley | Paquete de Manuales de Taller" },
       {
         name: "description",
         content:
-          "A technical Harley repair vault built for owners who want real specs, diagnostics, torque references and dealer-saving repair guidance.",
+          "Un búnker técnico de reparación Harley creado para dueños que quieren especificaciones reales, diagnósticos, tablas de torque y guías para ahorrar en el concesionario.",
       },
       {
         property: "og:title",
-        content: "The Harley Mechanic's Vault",
+        content: "El Búnker del Mecánico Harley",
       },
       {
         property: "og:description",
         content:
-          "Technical Harley repair references, diagnostic shortcuts and cost-saving workshop manuals in one digital vault.",
+          "Referencias técnicas de reparación Harley, atajos de diagnóstico y manuales de taller para ahorrar costos en un solo búnker digital.",
       },
     ],
   }),
@@ -107,30 +108,31 @@ function HeroSection() {
           <div className="mb-6 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             <span className="inline-flex items-center gap-2 border border-border bg-panel px-3 py-2 font-mono">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
-              Workshop archive
+              Archivo de taller
             </span>
-            <span className="font-mono">Digital product • instant access</span>
+            <span className="font-mono">Producto digital • acceso inmediato</span>
           </div>
 
           <h1 className="max-w-4xl font-headline text-5xl leading-[0.9] text-foreground md:text-7xl lg:text-[5.5rem]">
-            STOP PAYING
+            DEJA DE PAGAR
             <br />
-            DEALER PRICES
+            PRECIOS DE CONCESIONARIO
             <br />
-            FOR GARAGE JOBS.
+            POR TRABAJOS DE GARAJE.
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            <strong className="font-semibold text-foreground">The Harley Mechanic&apos;s Vault</strong> is a
-            workshop-grade bundle of repair references, torque sheets, diagnostic shortcuts and
-            dealer-cost breakdowns built for owners who actually turn wrenches.
+            <strong className="font-semibold text-foreground">El Búnker del Mecánico Harley</strong> es un
+            paquete con nivel de taller que reúne referencias de reparación, tablas de torque, atajos de
+            diagnóstico y desgloses de costos del concesionario creado para dueños que de verdad meten mano
+            a sus motos.
           </p>
 
           <div className="mt-8 grid gap-3 md:grid-cols-3">
             {[
-              "4 technical manuals organized by real repair jobs",
-              "Built for bench use, mobile reading and on‑demand reference",
-              "Made to cut waste, guesswork and dealer markup",
+              "4 manuales técnicos organizados por reparaciones reales",
+              "Diseñado para usar en el banco de trabajo, leer en el celular y consultar al instante",
+              "Hecho para eliminar gastos inútiles, adivinanzas y sobreprecios del concesionario",
             ].map((item) => (
               <div key={item} className="info-chip">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -141,7 +143,7 @@ function HeroSection() {
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a href="#pricing" className="button-cta">
-              Get the vault now
+              Obtener el búnker ahora
               <ChevronRight className="h-4 w-4" />
             </a>
           </div>
@@ -152,7 +154,7 @@ function HeroSection() {
             <div className="panel-topline" />
             <img
               src={workshopHero}
-              alt="Harley engine disassembled on a workshop bench under shop lighting"
+              alt="Motor Harley desarmado sobre un banco de taller bajo iluminación de trabajo"
               width={1600}
               height={1200}
               className="aspect-[4/5] w-full object-cover"
@@ -167,10 +169,10 @@ function HeroSection() {
 
 function FailureStrip() {
   const items = [
-    "NO DEALER APPOINTMENT",
-    "NO GUESSWORK ON TORQUE",
-    "NO PAYING $150 FOR BASIC DIAGNOSTICS",
-    "NO SPECIAL-TOOL PANIC",
+    "SIN TURNO EN EL CONCESIONARIO",
+    "SIN ADIVINAR EL TORQUE",
+    "SIN PAGAR US$ 150 POR UN DIAGNÓSTICO BÁSICO",
+    "SIN PÁNICO POR HERRAMIENTAS ESPECIALES",
   ];
 
   return (
@@ -193,18 +195,18 @@ function PainGrid() {
   const items = [
     {
       icon: CircleDollarSign,
-      title: "Labor padding",
-      text: "Many Harley owners are paying premium shop rates for repairs that become very manageable once the process is laid out correctly.",
+      title: "Mano de obra inflada",
+      text: "Muchos dueños de Harley pagan tarifas exageradas en el taller por reparaciones que se vuelven muy manejables cuando tienes el proceso explicado paso a paso.",
     },
     {
       icon: Gauge,
-      title: "Spec confusion",
-      text: "Most people do not stop because they lack courage. They stop because the torque values, diagnostic paths and sequences are scattered everywhere.",
+      title: "Confusión de especificaciones",
+      text: "La mayoría no se frena por falta de ganas. Se frena porque los valores de torque, las rutas de diagnóstico y las secuencias están dispersos por todos lados.",
     },
     {
       icon: TriangleAlert,
-      title: "Tool intimidation",
-      text: "Dealers make routine jobs sound impossible without a wall of special tools. This vault shows what matters, what substitutes and what to ignore.",
+      title: "Intimidación con herramientas",
+      text: "El concesionario hace que trabajos de rutina parezcan imposibles sin una pared llena de herramientas especiales. Este búnker te muestra qué importa, qué se puede sustituir y qué ignorar.",
     },
   ];
 
@@ -212,9 +214,9 @@ function PainGrid() {
     <section className="border-b border-border py-16 md:py-24 grid-floor">
       <div className="container mx-auto px-4 md:px-6">
         <div className="reveal-on-scroll max-w-3xl">
-          <Eyebrow>Why most owners overpay</Eyebrow>
+          <Eyebrow>Por qué la mayoría paga de más</Eyebrow>
           <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            THIS IS NOT ABOUT LOOKING LIKE A MECHANIC. IT&apos;S ABOUT HAVING THE RIGHT INFORMATION BEFORE THE BIKE IS ALREADY OPEN.
+            NO SE TRATA DE PARECER MECÁNICO. SE TRATA DE TENER LA INFORMACIÓN CORRECTA ANTES DE ABRIR LA MOTO.
           </h2>
         </div>
 
@@ -236,23 +238,23 @@ function VaultSection() {
   const manuals = [
     {
       number: "01",
-      title: "Diagnostic Reference",
-      text: "Button-combo reads, code interpretation, reset procedures and no-nonsense troubleshooting paths by platform.",
+      title: "Referencia de Diagnóstico",
+      text: "Lectura por combinación de botones, interpretación de códigos, procedimientos de reinicio y rutas de solución de fallas sin rodeos según tu plataforma.",
     },
     {
       number: "02",
-      title: "Torque Master Sheets",
-      text: "Critical fastener values grouped by actual job so you are not hunting page by page during a repair.",
+      title: "Tablas Maestras de Torque",
+      text: "Valores críticos de apriete agrupados por trabajo real para que no tengas que buscar página por página en medio de una reparación.",
     },
     {
       number: "03",
-      title: "Dealer Markup Files",
-      text: "A practical map of what shops charge, what the parts really cost and which jobs are worth doing yourself.",
+      title: "Archivos de Sobreprecio del Concesionario",
+      text: "Un mapa práctico de lo que cobran los talleres, lo que realmente cuestan los repuestos y qué trabajos vale la pena hacer tú mismo.",
     },
     {
       number: "04",
-      title: "Tool Substitution Guide",
-      text: "Shows which special tools matter, which ones can be replaced and how to work smarter with common garage equipment.",
+      title: "Guía de Sustitución de Herramientas",
+      text: "Muestra qué herramientas especiales son indispensables, cuáles se pueden reemplazar y cómo trabajar con inteligencia usando herramientas comunes de garaje.",
     },
   ];
 
@@ -262,9 +264,9 @@ function VaultSection() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
           <div>
             <div className="reveal-on-scroll max-w-3xl">
-              <Eyebrow>What you actually get</Eyebrow>
+              <Eyebrow>Lo que realmente recibes</Eyebrow>
               <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-                A REPAIR VAULT STRUCTURED LIKE A WORK BENCH, NOT A SALES BROCHURE.
+                UN BÚNKER DE REPARACIÓN ESTRUCTURADO COMO UN BANCO DE TRABAJO, NO COMO UN FOLLETO DE VENTAS.
               </h2>
             </div>
 
@@ -274,7 +276,7 @@ function VaultSection() {
                   <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
                     <span className="font-headline text-4xl leading-none text-primary">{manual.number}</span>
                     <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-                      Included manual
+                      Manual incluido
                     </span>
                   </div>
                   <h3 className="mt-5 font-headline text-2xl text-foreground">{manual.title}</h3>
@@ -286,12 +288,12 @@ function VaultSection() {
 
           <aside className="reveal-on-scroll panel overflow-hidden">
             <div className="border-b border-border bg-contrast px-5 py-4 font-mono text-[11px] uppercase tracking-[0.26em] text-contrast-foreground">
-              Bundle preview
+              Vista previa del paquete
             </div>
             <div className="p-5">
               <img
                 src={vaultBundle}
-                alt="Digital bundle preview of The Harley Mechanic's Vault manuals"
+                alt="Vista previa del paquete digital de manuales El Búnker del Mecánico Harley"
                 width={1200}
                 height={1200}
                 loading="lazy"
@@ -300,9 +302,9 @@ function VaultSection() {
             </div>
             <div className="grid gap-px border-t border-border bg-border">
               {[
-                ["Coverage", "Twin Cam, M8, Sportster"],
-                ["Use", "Mobile + bench printouts"],
-                ["Access", "Immediate after checkout"],
+                ["Cobertura", "Twin Cam, M8, Sportster"],
+                ["Uso", "Celular + impresiones de taller"],
+                ["Acceso", "Inmediato tras la compra"],
               ].map(([label, value]) => (
                 <div key={label} className="grid grid-cols-[120px_1fr] bg-panel px-5 py-4">
                   <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">{label}</div>
@@ -315,7 +317,7 @@ function VaultSection() {
 
         <div className="reveal-on-scroll mt-10 flex justify-center">
           <a href="#pricing" className="button-cta">
-            Unlock my access now
+            Desbloquear mi acceso ahora
           </a>
         </div>
       </div>
@@ -324,7 +326,7 @@ function VaultSection() {
 }
 
 function EvidenceSection() {
-  const badges = ["No install needed", "190+ topics", "Works on any phone", "Every Harley model"];
+  const badges = ["Sin instalar nada", "190+ temas", "Funciona en cualquier celular", "Todos los modelos Harley"];
 
   return (
     <section className="border-b border-border bg-background py-16 md:py-24">
@@ -332,14 +334,14 @@ function EvidenceSection() {
         <div className="reveal-on-scroll mx-auto max-w-4xl text-center">
           <div className="flex items-center justify-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
             <span className="h-px w-8 bg-primary" />
-            Bonus included
+            Bono incluido
             <span className="h-px w-8 bg-primary" />
           </div>
           <h2 className="mt-6 font-headline text-4xl leading-[0.92] md:text-6xl">
-            THE DEFINITIVE APP FOR HARLEY OWNERS
+            LA APP DEFINITIVA PARA DUEÑOS DE HARLEY
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            No install required. Open it on any phone, any time — built for every Harley model.
+            Sin necesidad de instalación. Ábrela en cualquier celular, en cualquier momento — creada para cada modelo Harley.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -357,10 +359,10 @@ function EvidenceSection() {
 
         <div className="reveal-on-scroll mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { src: phoneHomeAsset.url, caption: "The Harley Bible — every category in one place." },
-            { src: phoneEngineAsset.url, caption: "190+ deep-dive guides organized by topic." },
-            { src: phoneSearchAsset.url, caption: "Instant search across every fix and tip." },
-            { src: phoneHeatAsset.url, caption: "Step-by-step solutions with cautions." },
+            { src: phoneHomeAsset.url, caption: "La Biblia Harley — todas las categorías en un solo lugar." },
+            { src: phoneEngineAsset.url, caption: "190+ guías a fondo organizadas por tema." },
+            { src: phoneSearchAsset.url, caption: "Búsqueda instantánea de cada solución y consejo." },
+            { src: phoneHeatAsset.url, caption: "Soluciones paso a paso con advertencias claras." },
           ].map((item) => (
             <figure key={item.caption} className="flex flex-col items-center">
               <div className="relative w-full max-w-[260px] rounded-[32px] border-[10px] border-[#1a1a1a] bg-[#0a0a0a] p-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)]">
@@ -383,7 +385,7 @@ function EvidenceSection() {
 
         <div className="reveal-on-scroll mt-10 flex justify-center">
           <a href="#pricing" className="button-cta">
-            Get the app + vault
+            Obtener la app + el búnker
           </a>
         </div>
       </div>
@@ -394,28 +396,28 @@ function EvidenceSection() {
 
 function ComparisonSection() {
   const rows = [
-    ["Basic diagnostic session", "$150+", "$0 after download"],
-    ["Primary adjustment", "$120", "Do it yourself"],
-    ["Cam/tensioner related repair", "$1,800+", "Parts + guided reference"],
-    ["Tool panic purchase", "$2,000+ over time", "Buy only what matters"],
+    ["Sesión de diagnóstico básico", "US$ 150+", "US$ 0 después de descargar"],
+    ["Ajuste de primaria", "US$ 120", "Hazlo tú mismo"],
+    ["Reparación de levas / tensores", "US$ 1.800+", "Repuestos + guía paso a paso"],
+    ["Compra compulsiva de herramientas", "US$ 2.000+ con el tiempo", "Compra solo lo necesario"],
   ];
 
   return (
     <section className="border-b border-border py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="reveal-on-scroll max-w-3xl">
-          <Eyebrow>Cost perspective</Eyebrow>
+          <Eyebrow>Perspectiva de costos</Eyebrow>
           <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            ONE SMALL DIGITAL PURCHASE CAN SAVE YOU THOUSANDS IN BAD SERVICE HABITS.
+            UNA PEQUEÑA COMPRA DIGITAL PUEDE AHORRARTE MILES EN MALOS HÁBITOS DE TALLER.
           </h2>
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
           <div className="reveal-on-scroll panel overflow-hidden">
             <div className="grid grid-cols-3 border-b border-border bg-contrast text-[11px] uppercase tracking-[0.25em] text-contrast-foreground">
-              <div className="px-5 py-4 font-mono">Job</div>
-              <div className="px-5 py-4 font-mono">Dealer</div>
-              <div className="px-5 py-4 font-mono">Vault path</div>
+              <div className="px-5 py-4 font-mono">Trabajo</div>
+              <div className="px-5 py-4 font-mono">Concesionario</div>
+              <div className="px-5 py-4 font-mono">Ruta del Búnker</div>
             </div>
             {rows.map((row) => (
               <div key={row[0]} className="grid grid-cols-3 border-b border-border px-0 last:border-b-0">
@@ -427,10 +429,10 @@ function ComparisonSection() {
           </div>
 
           <div className="reveal-on-scroll panel p-6">
-            <div className="stat-label">Estimated savings potential</div>
-            <div className="mt-3 font-headline text-7xl leading-none text-primary">$3.4K+</div>
+            <div className="stat-label">Potencial de ahorro estimado</div>
+            <div className="mt-3 font-headline text-7xl leading-none text-primary">US$ 3,4K+</div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              For many owners, one or two avoided dealer visits can already cover the entire purchase.
+              Para muchos dueños, evitar una o dos visitas al concesionario ya cubre de sobra toda la compra.
             </p>
           </div>
         </div>
@@ -470,60 +472,65 @@ function useCountdown(minutes: number) {
 
 function PricingSection() {
   const countdown = useCountdown(3);
+  const geo = useGeo();
+  const pr = (k: "app" | "book" | "bundle") => fmtUsd(PRICES[k][geo.tier]);
   const tiers = [
     {
       id: "app",
-      label: "APP ONLY",
-      name: "THE APP",
-      oldPrice: "$147.00",
-      priceWhole: "42",
-      priceCents: ".90",
-      tagline: "190+ GUIDES IN YOUR POCKET",
+      label: "SOLO LA APP",
+      name: "LA APP",
+      oldPrice: fmtUsd(OLD_PRICES.app).full,
+      priceWhole: pr("app").whole,
+      priceCents: pr("app").cents,
+      local: geo.local(PRICES.app[geo.tier]),
+      tagline: "190+ GUÍAS EN TU BOLSILLO",
       features: [
-        { icon: "zap", text: "Full access to the Harley app" },
-        { icon: "infinity", text: "190+ deep-dive guides" },
-        { icon: "download", text: "Works on any phone — no install" },
-        { icon: "shield", text: "7-day guarantee" },
+        { icon: "zap", text: "Acceso completo a la app Harley" },
+        { icon: "infinity", text: "190+ guías detalladas a fondo" },
+        { icon: "download", text: "Funciona en cualquier celular — sin instalar" },
+        { icon: "shield", text: "Garantía de 7 días" },
       ],
-      cta: "GET THE APP",
-      href: "https://pay.hotmart.com/S106172425V",
+      cta: "OBTENER LA APP",
+      href: CHECKOUT.app[geo.tier],
       featured: false,
     },
     {
       id: "book",
-      label: "BOOK ONLY",
-      name: "THE MANUAL",
-      oldPrice: "$127.00",
-      priceWhole: "69",
-      priceCents: ".90",
-      tagline: "THE COMPLETE DIGITAL BOOK",
+      label: "SOLO EL LIBRO",
+      name: "EL MANUAL",
+      oldPrice: fmtUsd(OLD_PRICES.book).full,
+      priceWhole: pr("book").whole,
+      priceCents: pr("book").cents,
+      local: geo.local(PRICES.book[geo.tier]),
+      tagline: "EL LIBRO DIGITAL COMPLETO",
       features: [
-        { icon: "download", text: "Complete digital manual" },
-        { icon: "infinity", text: "Lifetime access" },
-        { icon: "zap", text: "Instant download" },
-        { icon: "shield", text: "7-day guarantee" },
+        { icon: "download", text: "Manual digital completo" },
+        { icon: "infinity", text: "Acceso de por vida" },
+        { icon: "zap", text: "Descarga inmediata" },
+        { icon: "shield", text: "Garantía de 7 días" },
       ],
-      cta: "GET THE BOOK",
-      href: "https://pay.hotmart.com/L105994413B",
+      cta: "OBTENER EL LIBRO",
+      href: CHECKOUT.book[geo.tier],
       featured: false,
     },
     {
       id: "bundle",
-      label: "SPECIAL PRICE ENDS IN",
-      badge: "BEST SELLER",
-      name: "BOOK + APP",
-      oldPrice: "$247.00",
-      priceWhole: "85",
-      priceCents: ".00",
-      tagline: "SPECIAL OFFER — TODAY ONLY",
+      label: "EL PRECIO ESPECIAL TERMINA EN",
+      badge: "MÁS VENDIDO",
+      name: "LIBRO + APP",
+      oldPrice: fmtUsd(OLD_PRICES.bundle).full,
+      priceWhole: pr("bundle").whole,
+      priceCents: pr("bundle").cents,
+      local: geo.local(PRICES.bundle[geo.tier]),
+      tagline: "OFERTA ESPECIAL — SOLO POR HOY",
       features: [
-        { icon: "download", text: "Complete digital manual" },
-        { icon: "zap", text: "Full access to the Harley app" },
-        { icon: "infinity", text: "Lifetime access & free updates" },
-        { icon: "shield", text: "7-day unconditional guarantee" },
+        { icon: "download", text: "Manual digital completo" },
+        { icon: "zap", text: "Acceso completo a la app Harley" },
+        { icon: "infinity", text: "Acceso de por vida y actualizaciones gratis" },
+        { icon: "shield", text: "Garantía incondicional de 7 días" },
       ],
-      cta: "UNLOCK THE FULL PACK",
-      href: "https://pay.hotmart.com/Q106173506K",
+      cta: "DESBLOQUEAR EL PAQUETE COMPLETO",
+      href: CHECKOUT.bundle[geo.tier],
       featured: true,
     },
   ];
@@ -602,7 +609,7 @@ function PricingSection() {
                           : "mt-2 font-mono text-base text-black"
                       }
                     >
-                      $
+                      US$
                     </span>
                     <span
                       className={
@@ -633,6 +640,12 @@ function PricingSection() {
                   >
                     {tier.tagline}
                   </div>
+
+                  {tier.local ? (
+                    <div className={featured ? "mt-2 font-mono text-xs text-white/80" : "mt-2 font-mono text-xs text-muted-foreground"}>
+                      {tier.local} en tu moneda
+                    </div>
+                  ) : null}
 
                   <ul className="mt-6 flex-1 space-y-3 text-left w-full">
                     {tier.features.map((feature, idx) => (
@@ -679,52 +692,52 @@ function PricingSection() {
 function TestimonialsSection() {
   const testimonials = [
     {
-      name: "Mike Johnson",
-      city: "Milwaukee, WI",
-      initials: "MJ",
+      name: "Javier R.",
+      city: "Monterrey, MX",
+      initials: "JR",
       photo: t1Asset.url,
       rating: 5,
-      text: "Saved me $340 on a primary adjustment alone. The torque sheets alone are worth more than the price.",
+      text: "Me ahorró US$ 340 solo en el ajuste de la primaria. Las tablas de torque por sí solas ya valen mucho más de lo que cuesta.",
     },
     {
-      name: "Tom Harris",
-      city: "Austin, TX",
-      initials: "TH",
+      name: "Andrés P.",
+      city: "Medellín, CO",
+      initials: "AP",
       photo: t2Asset.url,
       rating: 5,
-      text: "Finally a manual that talks like a mechanic and not like a lawyer. Straight to the point.",
+      text: "Por fin un manual que te habla como mecánico y no como abogado. Directo al grano y sin vueltas.",
     },
     {
-      name: "Dave Miller",
-      city: "Phoenix, AZ",
-      initials: "DM",
+      name: "Martín G.",
+      city: "Córdoba, AR",
+      initials: "MG",
       photo: t3Asset.url,
       rating: 5,
-      text: "Used the diagnostic reference to fix a check engine light the dealer wanted $180 to diagnose. Took me 20 minutes.",
+      text: "Usé la guía de diagnóstico para resolver una luz de check engine por la que el concesionario me quería cobrar US$ 180 solo por escanear. Lo solucioné en 20 minutos.",
     },
     {
-      name: "Jake Peterson",
-      city: "Columbus, OH",
-      initials: "JP",
+      name: "Carlos V.",
+      city: "Santiago, CL",
+      initials: "CV",
       photo: t4Asset.url,
       rating: 5,
-      text: "The tool substitution guide saved me from buying $400 in special tools I didn't need. Game changer.",
+      text: "La guía de sustitución de herramientas me salvó de gastar US$ 400 en herramientas especiales que no necesitaba. Una joya para el garaje.",
     },
     {
-      name: "Chris Barnes",
-      city: "Charlotte, NC",
-      initials: "CB",
+      name: "Diego M.",
+      city: "Lima, PE",
+      initials: "DM",
       photo: t5Asset.url,
       rating: 5,
-      text: "I'm not a pro but this made me confident enough to do my own cam tensioner inspection. Clear steps, no fluff.",
+      text: "No soy mecánico profesional, pero esto me dio la seguridad para hacer yo mismo la revisión de los tensores de distribución a los 40.000 km. Pasos claros, sin relleno.",
     },
     {
-      name: "Ray Cooper",
-      city: "Denver, CO",
-      initials: "RC",
+      name: "Fernando L.",
+      city: "Guadalajara, MX",
+      initials: "FL",
       photo: t6Asset.url,
       rating: 5,
-      text: "Best $45 I've spent on my bike. Already used it three times in the first month. Pays for itself fast.",
+      text: "Los mejores US$ 42,50 que he invertido en mi moto. Ya lo usé tres veces en el primer mes. Se paga solo rapidísimo.",
     },
   ];
 
@@ -732,9 +745,9 @@ function TestimonialsSection() {
     <section className="border-b border-border bg-panel py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="reveal-on-scroll mx-auto max-w-3xl text-center">
-          <Eyebrow>Buyer stories</Eyebrow>
+          <Eyebrow>Historias de compradores</Eyebrow>
           <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            REAL OWNERS. REAL WRENCHES. REAL SAVINGS.
+            DUEÑOS REALES. HERRAMIENTAS REALES. AHORROS REALES.
           </h2>
         </div>
 
@@ -784,24 +797,24 @@ function TestimonialsSection() {
 function FAQSection() {
   const faqs = [
     {
-      question: "Does it cover my Harley model?",
+      question: "¿Cubre mi modelo de Harley?",
       answer:
-        "The bundle is built around the platforms most owners ask about: Twin Cam, Milwaukee-Eight and Sportster families, with references organized for practical use instead of showroom marketing language.",
+        "El paquete está armado sobre las plataformas que más tienen los motociclistas: familias Twin Cam, Milwaukee-Eight y Sportster, con referencias organizadas para el uso práctico en el garaje y no con lenguaje de catálogo.",
     },
     {
-      question: "Is this for professionals only?",
+      question: "¿Esto es solo para mecánicos profesionales?",
       answer:
-        "No. It is for owners who want solid information. Some jobs are beginner-friendly, others are not, and the material is designed to help you tell the difference before starting.",
+        "No. Es para dueños que quieren información sólida y confiable. Algunos trabajos son sencillos para principiantes y otros no; el material está diseñado para ayudarte a notar la diferencia antes de desarmar.",
     },
     {
-      question: "Is it physical or digital?",
+      question: "¿El material es físico o digital?",
       answer:
-        "Digital. You get immediate access after purchase and can read it on your phone, tablet or print selected pages for bench use.",
+        "Digital. Obtienes acceso inmediato después de la compra y puedes leerlo en tu celular, tablet o imprimir las páginas que necesites para tenerlas en el banco de trabajo.",
     },
     {
-      question: "What if I do not own every special tool?",
+      question: "¿Qué pasa si no tengo todas las herramientas especiales?",
       answer:
-        "That is exactly why the substitution guide exists. It helps you identify what can be replaced, what can be improvised and what is actually worth buying.",
+        "Exactamente por eso existe la guía de sustitución. Te ayuda a identificar qué se puede reemplazar, qué se puede improvisar de forma segura y qué herramienta vale la pena comprar de verdad.",
     },
   ];
 
@@ -811,9 +824,9 @@ function FAQSection() {
     <section className="py-16 md:py-24">
       <div className="container mx-auto max-w-4xl px-4 md:px-6">
         <div className="reveal-on-scroll text-center">
-          <Eyebrow>Questions before checkout</Eyebrow>
+          <Eyebrow>Preguntas antes de comprar</Eyebrow>
           <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            STRAIGHT ANSWERS BEFORE YOU BUY.
+            RESPUESTAS DIRECTAS ANTES DE TU COMPRA.
           </h2>
         </div>
 
@@ -855,12 +868,12 @@ function MinimalFooter() {
     <footer className="border-t border-border bg-panel py-6">
       <div className="container mx-auto flex flex-col gap-3 px-4 md:flex-row md:items-center md:justify-between md:px-6">
         <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-          Technical digital product for Harley owners
+          Producto digital técnico para dueños de Harley • Publicación independiente no afiliada a Harley-Davidson
         </div>
         <div className="flex gap-5 font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
-          <a href="#">Support</a>
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+          <a href="#">Soporte</a>
         </div>
       </div>
     </footer>

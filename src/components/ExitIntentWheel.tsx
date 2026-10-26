@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Flame, Lock } from "lucide-react";
+import { CHECKOUT, PRICES, fmtUsd, useGeo } from "@/lib/precio";
 
-const CLAIM_URL = "https://pay.hotmart.com/Q106173506K?off=tcj4bkjo";
 const SESSION_KEY = "harley_vault_exit_wheel_shown";
 
 const segments = [
@@ -14,6 +14,7 @@ const segments = [
 ];
 
 export default function ExitIntentWheel() {
+  const geo = useGeo();
   const [open, setOpen] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [won, setWon] = useState(false);
@@ -165,7 +166,7 @@ export default function ExitIntentWheel() {
       <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-[#F47216]/40 bg-[#0a0a0a]/95 p-6 md:p-8 shadow-[0_30px_80px_-20px_rgba(244,114,22,0.5)]">
         <button
           onClick={close}
-          aria-label="Close"
+          aria-label="Cerrar"
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/70 transition hover:border-[#F47216] hover:text-[#F47216]"
         >
           <X className="h-4 w-4" />
@@ -174,17 +175,17 @@ export default function ExitIntentWheel() {
         <div className="mb-4 flex justify-center">
           <div className="inline-flex items-center gap-2 rounded-sm border border-[#F47216]/40 bg-[#F47216]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[#F47216]">
             <Flame className="h-3.5 w-3.5" />
-            {won ? "You won!" : "Exclusive offer"}
+            {won ? "¡Ganaste!" : "Oferta exclusiva"}
           </div>
         </div>
 
         {!won ? (
           <h2 className="mb-6 text-center text-3xl md:text-4xl font-black uppercase leading-tight text-white">
-            Spin to Win <span className="text-[#F47216]">Your Discount</span>
+            Gira para Ganar <span className="text-[#F47216]">Tu Descuento</span>
           </h2>
         ) : (
           <h2 className="mb-3 text-center text-3xl md:text-4xl font-black uppercase leading-tight text-white">
-            You Got <span className="text-[#F47216]">50% OFF</span> The Vault
+            Ganaste <span className="text-[#F47216]">50% OFF</span> en El Búnker
           </h2>
         )}
 
@@ -255,20 +256,20 @@ export default function ExitIntentWheel() {
             disabled={spinning}
             className="relative flex w-full items-center justify-center gap-2 rounded-sm bg-[#F47216] px-6 py-4 text-lg font-black uppercase tracking-widest text-white transition hover:bg-[#ff8533] disabled:opacity-70 shadow-[0_15px_40px_-10px_rgba(244,114,22,0.7)]"
           >
-            {spinning ? "Spinning..." : "Spin Now"}
+            {spinning ? "Girando..." : "Girar Ahora"}
             <Flame className="h-5 w-5" />
           </button>
         ) : (
           <>
             <p className="mb-5 text-center text-sm md:text-base text-white/70">
-              The Harley Mechanic's Vault for just{" "}
-              <span className="font-bold text-white">$22.45</span> — expires
-              when you close this page.
+              El Búnker del Mecánico Harley por solo{" "}
+              <span className="font-bold text-white">{fmtUsd(PRICES.wheel[geo.tier]).full}</span> — expira
+              al cerrar esta página.
             </p>
 
             <div className="mb-5 flex flex-col items-center">
               <span className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
-                Expires in
+                Expira en
               </span>
               <div className="text-4xl md:text-5xl font-black tracking-wider text-[#F47216] tabular-nums">
                 {mm}:{ss}
@@ -276,20 +277,20 @@ export default function ExitIntentWheel() {
             </div>
 
             <a
-              href={CLAIM_URL}
+              href={CHECKOUT.wheel[geo.tier]}
               target="_blank"
               rel="noopener noreferrer"
               className="relative flex items-center justify-center gap-3 rounded-sm bg-[#F47216] px-6 py-4 text-lg font-black uppercase tracking-widest text-white transition hover:bg-[#ff8533] shadow-[0_15px_40px_-10px_rgba(244,114,22,0.7)]"
             >
               <Lock className="h-5 w-5" />
-              Claim My 50% Discount
+              Reclamar Mi 50% de Descuento
             </a>
 
             <button
               onClick={close}
               className="mt-4 w-full text-center text-xs uppercase tracking-widest text-white/50 underline-offset-4 transition hover:text-white hover:underline"
             >
-              No thanks, I'll pay full price
+              No gracias, prefiero pagar el precio completo
             </button>
           </>
         )}
