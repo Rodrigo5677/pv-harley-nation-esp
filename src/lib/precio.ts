@@ -18,10 +18,10 @@ export const OLD_PRICES: Record<Exclude<Plan, "wheel">, number> = { app: 73.5, b
 
 /** Links de checkout Hotmart por faixa (preenchidos com as ofertas em espanhol). */
 export const CHECKOUT: Record<Plan, Record<Tier, string>> = {
-  app: { a: "https://pay.hotmart.com/S106172425V", b: "https://pay.hotmart.com/S106172425V" },
-  book: { a: "https://pay.hotmart.com/L105994413B", b: "https://pay.hotmart.com/L105994413B" },
-  bundle: { a: "https://pay.hotmart.com/Q106173506K", b: "https://pay.hotmart.com/Q106173506K" },
-  wheel: { a: "https://pay.hotmart.com/Q106173506K?off=tcj4bkjo", b: "https://pay.hotmart.com/Q106173506K?off=tcj4bkjo" },
+  app: { a: "https://pay.hotmart.com/D108191439E", b: "https://pay.hotmart.com/D108191439E?off=tz9coki9" },
+  book: { a: "https://pay.hotmart.com/W108191450G", b: "https://pay.hotmart.com/W108191450G?off=jxx1kntk" },
+  bundle: { a: "https://pay.hotmart.com/V108191423Y", b: "https://pay.hotmart.com/V108191423Y?off=ql80b8og" },
+  wheel: { a: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3", b: "https://pay.hotmart.com/V108191423Y?off=0qfvgqd3" },
 };
 
 /** Moeda local por país (código ISO, símbolo exibido). */
@@ -72,6 +72,7 @@ export interface Geo {
   country: string | null;
   tier: Tier;
   local: (usd: number) => string | null; // "≈ MX$ 790" ou null (USD/desconhecido)
+  localParts: (usd: number) => { sym: string; value: string } | null;
 }
 
 const CACHE = "geo_precio_v1";
@@ -118,14 +119,17 @@ export function useGeo(): Geo {
     };
   }, []);
 
-  const local = (usd: number) => {
+  const localParts = (usd: number) => {
     if (!country || !CURRENCY[country]) return null;
     const [code, sym] = CURRENCY[country];
     const rate = rates[code];
     if (!rate) return null;
-    const v = nice(usd * rate);
-    return `≈ ${sym} ${grp(v)}`;
+    return { sym, value: grp(nice(usd * rate)) };
+  };
+  const local = (usd: number) => {
+    const l = localParts(usd);
+    return l ? `≈ ${l.sym} ${l.value}` : null;
   };
 
-  return { country, tier: tierOf(country), local };
+  return { country, tier: tierOf(country), local, localParts };
 }

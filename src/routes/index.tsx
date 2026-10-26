@@ -473,16 +473,21 @@ function useCountdown(minutes: number) {
 function PricingSection() {
   const countdown = useCountdown(3);
   const geo = useGeo();
-  const pr = (k: "app" | "book" | "bundle") => fmtUsd(PRICES[k][geo.tier]);
-  const tiers = [
+  // Preço grande na moeda local (aproximado); US$ pequeno embaixo. Sem moeda local -> US$.
+  const priceView = (old: number, usd: number): { oldPrice: string; sym: string; priceWhole: string; priceCents: string; usdNote: string | null } => {
+    const loc = geo.localParts(usd);
+    const oldLoc = geo.localParts(old);
+    const u = fmtUsd(usd);
+    return loc && oldLoc
+      ? { oldPrice: `${oldLoc.sym} ${oldLoc.value}`, sym: loc.sym, priceWhole: loc.value, priceCents: "", usdNote: `${u.full} · pagas en tu moneda al cambio del día` }
+      : { oldPrice: fmtUsd(old).full, sym: "US$", priceWhole: u.whole, priceCents: u.cents, usdNote: null };
+  };
+  const tiers: { id: string; label: string; badge?: string; name: string; oldPrice: string; sym: string; priceWhole: string; priceCents: string; usdNote: string | null; tagline: string; features: { icon: string; text: string }[]; cta: string; href: string; featured: boolean }[] = [
     {
       id: "app",
       label: "SOLO LA APP",
       name: "LA APP",
-      oldPrice: fmtUsd(OLD_PRICES.app).full,
-      priceWhole: pr("app").whole,
-      priceCents: pr("app").cents,
-      local: geo.local(PRICES.app[geo.tier]),
+      ...priceView(OLD_PRICES.app, PRICES.app[geo.tier]),
       tagline: "190+ GUÍAS EN TU BOLSILLO",
       features: [
         { icon: "zap", text: "Acceso completo a la app Harley" },
@@ -498,10 +503,7 @@ function PricingSection() {
       id: "book",
       label: "SOLO EL LIBRO",
       name: "EL MANUAL",
-      oldPrice: fmtUsd(OLD_PRICES.book).full,
-      priceWhole: pr("book").whole,
-      priceCents: pr("book").cents,
-      local: geo.local(PRICES.book[geo.tier]),
+      ...priceView(OLD_PRICES.book, PRICES.book[geo.tier]),
       tagline: "EL LIBRO DIGITAL COMPLETO",
       features: [
         { icon: "download", text: "Manual digital completo" },
@@ -518,10 +520,7 @@ function PricingSection() {
       label: "EL PRECIO ESPECIAL TERMINA EN",
       badge: "MÁS VENDIDO",
       name: "LIBRO + APP",
-      oldPrice: fmtUsd(OLD_PRICES.bundle).full,
-      priceWhole: pr("bundle").whole,
-      priceCents: pr("bundle").cents,
-      local: geo.local(PRICES.bundle[geo.tier]),
+      ...priceView(OLD_PRICES.bundle, PRICES.bundle[geo.tier]),
       tagline: "OFERTA ESPECIAL — SOLO POR HOY",
       features: [
         { icon: "download", text: "Manual digital completo" },
@@ -609,13 +608,16 @@ function PricingSection() {
                           : "mt-2 font-mono text-base text-black"
                       }
                     >
-                      US$
+                      {tier.sym}
                     </span>
                     <span
                       className={
-                        featured
-                          ? "font-headline text-7xl leading-none text-white md:text-8xl"
-                          : "font-headline text-7xl leading-none text-black md:text-8xl"
+                        (tier.priceWhole.length > 5
+                          ? "font-headline text-5xl leading-none md:text-6xl "
+                          : tier.priceWhole.length > 3
+                            ? "font-headline text-6xl leading-none md:text-7xl "
+                            : "font-headline text-7xl leading-none md:text-8xl ") +
+                        (featured ? "text-white" : "text-black")
                       }
                     >
                       {tier.priceWhole}
@@ -641,9 +643,9 @@ function PricingSection() {
                     {tier.tagline}
                   </div>
 
-                  {tier.local ? (
+                  {tier.usdNote ? (
                     <div className={featured ? "mt-2 font-mono text-xs text-white/80" : "mt-2 font-mono text-xs text-muted-foreground"}>
-                      {tier.local} en tu moneda
+                      {tier.usdNote}
                     </div>
                   ) : null}
 

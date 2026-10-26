@@ -263,7 +263,7 @@ export default function ExitIntentWheel() {
           <>
             <p className="mb-5 text-center text-sm md:text-base text-white/70">
               El Búnker del Mecánico Harley por solo{" "}
-              <span className="font-bold text-white">{fmtUsd(PRICES.wheel[geo.tier]).full}</span> — expira
+              <span className="font-bold text-white">{geo.local(PRICES.wheel[geo.tier]) ? `${geo.local(PRICES.wheel[geo.tier])!.replace("≈ ", "")} (${fmtUsd(PRICES.wheel[geo.tier]).full})` : fmtUsd(PRICES.wheel[geo.tier]).full}</span> — expira
               al cerrar esta página.
             </p>
 
