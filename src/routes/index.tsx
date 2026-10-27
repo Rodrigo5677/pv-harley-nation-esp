@@ -1,881 +1,750 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ComponentType, type ReactNode, useEffect, useState } from "react";
 import {
+  Battery,
   Check,
-  ChevronRight,
-  CircleDollarSign,
-  Clock,
+  ChevronDown,
+  CircleDot,
+  Cog,
+  Disc,
   Download,
+  Droplet,
+  Flame,
   Gauge,
-  Infinity,
+  Infinity as InfinityIcon,
   Lock,
-  Minus,
-  Plus,
+  RotateCcw,
   ShieldCheck,
   Sparkles,
   Star,
+  Timer,
   TriangleAlert,
   Wrench,
   Zap,
 } from "lucide-react";
-import workshopHero from "@/assets/workshop-hero.jpg";
-import vaultBundle from "@/assets/vault-bundle.png";
-
+import heroHarley from "@/assets/hero-harley.jpg";
+import manualMockup from "@/assets/manual-mockup.webp";
 import phoneHomeAsset from "@/assets/app/phone-home.png.asset.json";
 import phoneEngineAsset from "@/assets/app/phone-engine.png.asset.json";
 import phoneSearchAsset from "@/assets/app/phone-search.png.asset.json";
 import phoneHeatAsset from "@/assets/app/phone-heat.png.asset.json";
-import ExitIntentWheel from "@/components/ExitIntentWheel";
-import { CHECKOUT, OLD_PRICES, PRICES, fmtUsd, useGeo } from "@/lib/precio";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import t1Asset from "@/assets/testimonials/t1.png.asset.json";
-import t2Asset from "@/assets/testimonials/t2.png.asset.json";
-import t3Asset from "@/assets/testimonials/t3.png.asset.json";
 import t4Asset from "@/assets/testimonials/t4.png.asset.json";
-import t5Asset from "@/assets/testimonials/t5.png.asset.json";
 import t6Asset from "@/assets/testimonials/t6.png.asset.json";
-
+import ExitIntentWheel from "@/components/ExitIntentWheel";
+import { CHECKOUT, PRICES, fmtUsd, useGeo } from "@/lib/precio";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "El Búnker del Mecánico Harley | Paquete de Manuales de Taller" },
+      { title: "Manual de Longevidad Harley — Cuida tu moto como un veterano" },
       {
         name: "description",
         content:
-          "Un búnker técnico de reparación Harley creado para dueños que quieren especificaciones reales, diagnósticos, tablas de torque y guías para ahorrar en el concesionario.",
+          "El manual digital + app para dueños de Harley en México: lo que puedes hacer tú mismo para que tu moto pase de los 200,000 km como nueva.",
       },
-      {
-        property: "og:title",
-        content: "El Búnker del Mecánico Harley",
-      },
+      { property: "og:title", content: "Manual de Longevidad Harley" },
       {
         property: "og:description",
-        content:
-          "Referencias técnicas de reparación Harley, atajos de diagnóstico y manuales de taller para ahorrar costos en un solo búnker digital.",
+        content: "Cuida tu Harley como un veterano del camino. Manual digital + app, acceso inmediato.",
       },
     ],
   }),
   component: LandingPage,
 });
 
+const BRAND = "MANUAL HARLEY";
+
 function LandingPage() {
-  useReveal();
-
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <HeroSection />
-      <FailureStrip />
-      <PainGrid />
-      <VaultSection />
-      <EvidenceSection />
-      <ComparisonSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <FAQSection />
-      <MinimalFooter />
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <Header />
+      <Hero />
+      <SixThings />
+      <ContentSection />
+      <CtaStrip />
+      <AppSection />
+      <Testimonials />
+      <OfferSection />
+      <Benefits />
+      <Guarantee />
+      <Faq />
+      <Footer />
       <ExitIntentWheel />
-    </main>
+    </div>
   );
 }
 
-function useReveal() {
-  useEffect(() => {
-    const elements = document.querySelectorAll(".reveal-on-scroll");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("is-visible");
-        });
-      },
-      { threshold: 0.14 },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
-  }, []);
+function scrollToOffer() {
+  document.getElementById("offer")?.scrollIntoView({ behavior: "smooth" });
 }
 
-function Eyebrow({ children }: { children: ReactNode }) {
-  return <div className="section-eyebrow">{children}</div>;
-}
-
-function HeroSection() {
+function Section({ id, children, className = "" }: { id?: string; children: ReactNode; className?: string }) {
   return (
-    <section className="border-b border-border hero-metal">
-      <div className="container mx-auto grid gap-10 px-4 py-10 md:px-6 md:py-14 lg:grid-cols-[minmax(0,1.15fr)_430px] lg:items-start lg:gap-14">
-        <div className="reveal-on-scroll">
-          <div className="mb-6 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            <span className="inline-flex items-center gap-2 border border-border bg-panel px-3 py-2 font-mono">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              Archivo de taller
-            </span>
-            <span className="font-mono">Producto digital • acceso inmediato</span>
-          </div>
+    <section id={id} className={`relative py-8 md:py-12 ${className}`}>
+      <div className="container mx-auto px-4 md:px-6">{children}</div>
+    </section>
+  );
+}
 
-          <h1 className="max-w-4xl font-headline text-5xl leading-[0.9] text-foreground md:text-7xl lg:text-[5.5rem]">
-            DEJA DE PAGAR
-            <br />
-            PRECIOS DE CONCESIONARIO
-            <br />
-            POR TRABAJOS DE GARAJE.
+function SectionTitle({ eyebrow, title, subtitle }: { eyebrow?: string; title: ReactNode; subtitle?: string }) {
+  return (
+    <div className="mx-auto mb-7 max-w-3xl text-center md:mb-14">
+      {eyebrow && (
+        <div className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.3em] text-ember">
+          <span className="h-px w-8 bg-ember" />
+          {eyebrow}
+          <span className="h-px w-8 bg-ember" />
+        </div>
+      )}
+      <h2 className="font-display text-4xl font-bold leading-[0.95] md:text-6xl">{title}</h2>
+      {subtitle && <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>}
+    </div>
+  );
+}
+
+function Logo({ small = false }: { small?: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-sm gradient-ember">
+        <Flame className="h-5 w-5 text-background" />
+      </div>
+      <span className={`font-display font-bold tracking-wider ${small ? "text-sm" : "text-lg"}`}>{BRAND}</span>
+    </div>
+  );
+}
+
+function Header() {
+  return (
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
+      <div className="container mx-auto flex items-center justify-between px-4 py-4 md:px-6">
+        <Logo />
+        <button
+          onClick={scrollToOffer}
+          className="hidden items-center gap-2 rounded-sm border border-ember/40 px-4 py-2 text-xs font-bold uppercase tracking-widest text-ember transition hover:bg-ember hover:text-background md:inline-flex"
+        >
+          Quiero mi manual
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative overflow-hidden pt-20">
+      <div className="absolute inset-0">
+        <img
+          src={heroHarley}
+          alt="Harley en la carretera de noche"
+          className="h-full w-full object-cover"
+          width={1920}
+          height={1280}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+      </div>
+
+      <div className="container relative mx-auto px-4 py-14 md:px-6 md:py-24">
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-sm border border-ember/40 bg-ember/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-ember">
+            <Flame className="h-4 w-4" />
+            Para dueños de Harley en México
+          </div>
+          <h1 className="font-display text-4xl font-bold leading-[0.95] md:text-7xl">
+            Tu Harley como nueva <span className="text-ember">por más de 200,000 km</span>
           </h1>
-
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            <strong className="font-semibold text-foreground">El Búnker del Mecánico Harley</strong> es un
-            paquete con nivel de taller que reúne referencias de reparación, tablas de torque, atajos de
-            diagnóstico y desgloses de costos del concesionario creado para dueños que de verdad meten mano
-            a sus motos.
+          <p className="mt-6 max-w-2xl text-base text-muted-foreground md:text-xl">
+            El manual que te enseña a cuidar tu moto como un veterano del camino: lo que puedes hacer tú mismo en tu
+            cochera y los errores que le quitan años de vida a tu V-Twin.
           </p>
-
-          <div className="mt-8 grid gap-3 md:grid-cols-3">
-            {[
-              "4 manuales técnicos organizados por reparaciones reales",
-              "Diseñado para usar en el banco de trabajo, leer en el celular y consultar al instante",
-              "Hecho para eliminar gastos inútiles, adivinanzas y sobreprecios del concesionario",
-            ].map((item) => (
-              <div key={item} className="info-chip">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href="#pricing" className="button-cta">
-              Obtener el búnker ahora
-              <ChevronRight className="h-4 w-4" />
-            </a>
+          <button
+            onClick={scrollToOffer}
+            className="group mt-9 inline-flex items-center gap-3 rounded-sm gradient-ember px-8 py-5 font-display text-lg font-bold uppercase tracking-wider text-background shadow-glow transition hover:scale-105"
+          >
+            Quiero mi manual
+            <Flame className="h-5 w-5 transition group-hover:translate-x-1" />
+          </button>
+          <div className="mt-4 text-xs uppercase tracking-widest text-muted-foreground">
+            Pago único · Acceso inmediato · Garantía de 7 días
           </div>
         </div>
-
-        <div className="reveal-on-scroll space-y-4">
-          <div className="panel overflow-hidden">
-            <div className="panel-topline" />
-            <img
-              src={workshopHero}
-              alt="Motor Harley desarmado sobre un banco de taller bajo iluminación de trabajo"
-              width={1600}
-              height={1200}
-              className="aspect-[4/5] w-full object-cover"
-            />
-          </div>
-        </div>
-
       </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-background" />
     </section>
   );
 }
 
-function FailureStrip() {
-  const items = [
-    "SIN TURNO EN EL CONCESIONARIO",
-    "SIN ADIVINAR EL TORQUE",
-    "SIN PAGAR US$ 150 POR UN DIAGNÓSTICO BÁSICO",
-    "SIN PÁNICO POR HERRAMIENTAS ESPECIALES",
-  ];
+const sixThings: { icon: ComponentType<{ className?: string }>; title: string; items: string[] }[] = [
+  {
+    icon: RotateCcw,
+    title: "Reinicio del acelerador",
+    items: [
+      "Encendido en ON, motor apagado",
+      "Gira el acelerador a fondo cinco veces",
+      "En la quinta, sostenlo dos segundos",
+      "Apaga el encendido y espera diez segundos",
+    ],
+  },
+  {
+    icon: Gauge,
+    title: "Más potencia",
+    items: [
+      "Filtro de aire de alto flujo: +2–3 HP",
+      "Mofles slip-on: hasta +5 HP",
+      "La afinación (tuner) siempre va AL FINAL",
+      "Solo piezas que cumplan la norma de emisiones",
+    ],
+  },
+  {
+    icon: CircleDot,
+    title: "Presión de llantas",
+    items: [
+      "Revísala siempre en frío, nunca en caliente",
+      "El número del costado es la presión MÁXIMA",
+      "Delantera y trasera nunca llevan la misma",
+      "Reajusta si llevas pasajero o equipaje",
+    ],
+  },
+  {
+    icon: Droplet,
+    title: "Cambio de aceite",
+    items: [
+      "Calienta el motor y luego drena",
+      "Cambia el filtro de aceite siempre",
+      "Unta un poco de aceite en el empaque del filtro",
+      "No olvides el aceite de la primaria — tiene su propio intervalo",
+    ],
+  },
+  {
+    icon: Disc,
+    title: "Líquido de frenos",
+    items: [
+      "Se cambia por tiempo: cada dos años",
+      "Revisa la mirilla: si está café, ya toca",
+      "Con 3% de agua, el punto de ebullición se desploma",
+      "Purga siempre en el orden correcto",
+    ],
+  },
+  {
+    icon: Battery,
+    title: "Batería y moto parada",
+    items: [
+      "La electrónica consume batería aunque la moto no se use",
+      "Debajo de 12.4 V empieza la sulfatación",
+      "Si no la usas por semanas, conéctale un mantenedor de carga",
+      "Llena el tanque y agrega estabilizador",
+    ],
+  },
+];
 
+function SixThings() {
   return (
-    <section className="border-b border-border bg-panel">
-      <div className="container mx-auto px-4 py-4 md:px-6">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-          {items.map((item) => (
-            <div key={item} className="flex items-center gap-3">
-              <span className="h-2 w-2 bg-primary" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PainGrid() {
-  const items = [
-    {
-      icon: CircleDollarSign,
-      title: "Mano de obra inflada",
-      text: "Muchos dueños de Harley pagan tarifas exageradas en el taller por reparaciones que se vuelven muy manejables cuando tienes el proceso explicado paso a paso.",
-    },
-    {
-      icon: Gauge,
-      title: "Confusión de especificaciones",
-      text: "La mayoría no se frena por falta de ganas. Se frena porque los valores de torque, las rutas de diagnóstico y las secuencias están dispersos por todos lados.",
-    },
-    {
-      icon: TriangleAlert,
-      title: "Intimidación con herramientas",
-      text: "El concesionario hace que trabajos de rutina parezcan imposibles sin una pared llena de herramientas especiales. Este búnker te muestra qué importa, qué se puede sustituir y qué ignorar.",
-    },
-  ];
-
-  return (
-    <section className="border-b border-border py-16 md:py-24 grid-floor">
+    <section className="relative bg-background py-8 md:py-12">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="reveal-on-scroll max-w-3xl">
-          <Eyebrow>Por qué la mayoría paga de más</Eyebrow>
-          <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            NO SE TRATA DE PARECER MECÁNICO. SE TRATA DE TENER LA INFORMACIÓN CORRECTA ANTES DE ABRIR LA MOTO.
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+            Seis cosas que puedes hacer tú mismo
           </h2>
-        </div>
-
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {items.map((item) => (
-            <article key={item.title} className="reveal-on-scroll panel p-6">
-              <item.icon className="h-8 w-8 text-primary" strokeWidth={1.75} />
-              <h3 className="mt-6 font-headline text-2xl text-foreground">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function VaultSection() {
-  const manuals = [
-    {
-      number: "01",
-      title: "Referencia de Diagnóstico",
-      text: "Lectura por combinación de botones, interpretación de códigos, procedimientos de reinicio y rutas de solución de fallas sin rodeos según tu plataforma.",
-    },
-    {
-      number: "02",
-      title: "Tablas Maestras de Torque",
-      text: "Valores críticos de apriete agrupados por trabajo real para que no tengas que buscar página por página en medio de una reparación.",
-    },
-    {
-      number: "03",
-      title: "Archivos de Sobreprecio del Concesionario",
-      text: "Un mapa práctico de lo que cobran los talleres, lo que realmente cuestan los repuestos y qué trabajos vale la pena hacer tú mismo.",
-    },
-    {
-      number: "04",
-      title: "Guía de Sustitución de Herramientas",
-      text: "Muestra qué herramientas especiales son indispensables, cuáles se pueden reemplazar y cómo trabajar con inteligencia usando herramientas comunes de garaje.",
-    },
-  ];
-
-  return (
-    <section className="border-b border-border py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
-          <div>
-            <div className="reveal-on-scroll max-w-3xl">
-              <Eyebrow>Lo que realmente recibes</Eyebrow>
-              <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-                UN BÚNKER DE REPARACIÓN ESTRUCTURADO COMO UN BANCO DE TRABAJO, NO COMO UN FOLLETO DE VENTAS.
-              </h2>
-            </div>
-
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {manuals.map((manual) => (
-                <article key={manual.number} className="reveal-on-scroll panel p-6">
-                  <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
-                    <span className="font-headline text-4xl leading-none text-primary">{manual.number}</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-                      Manual incluido
-                    </span>
-                  </div>
-                  <h3 className="mt-5 font-headline text-2xl text-foreground">{manual.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{manual.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <aside className="reveal-on-scroll panel overflow-hidden">
-            <div className="border-b border-border bg-contrast px-5 py-4 font-mono text-[11px] uppercase tracking-[0.26em] text-contrast-foreground">
-              Vista previa del paquete
-            </div>
-            <div className="p-5">
-              <img
-                src={vaultBundle}
-                alt="Vista previa del paquete digital de manuales El Búnker del Mecánico Harley"
-                width={1200}
-                height={1200}
-                loading="lazy"
-                className="w-full"
-              />
-            </div>
-            <div className="grid gap-px border-t border-border bg-border">
-              {[
-                ["Cobertura", "Twin Cam, M8, Sportster"],
-                ["Uso", "Celular + impresiones de taller"],
-                ["Acceso", "Inmediato tras la compra"],
-              ].map(([label, value]) => (
-                <div key={label} className="grid grid-cols-[120px_1fr] bg-panel px-5 py-4">
-                  <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">{label}</div>
-                  <div className="text-sm font-medium text-foreground">{value}</div>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </div>
-
-        <div className="reveal-on-scroll mt-10 flex justify-center">
-          <a href="#pricing" className="button-cta">
-            Desbloquear mi acceso ahora
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EvidenceSection() {
-  const badges = ["Sin instalar nada", "190+ temas", "Funciona en cualquier celular", "Todos los modelos Harley"];
-
-  return (
-    <section className="border-b border-border bg-background py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="reveal-on-scroll mx-auto max-w-4xl text-center">
-          <div className="flex items-center justify-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
-            <span className="h-px w-8 bg-primary" />
-            Bono incluido
-            <span className="h-px w-8 bg-primary" />
-          </div>
-          <h2 className="mt-6 font-headline text-4xl leading-[0.92] md:text-6xl">
-            LA APP DEFINITIVA PARA DUEÑOS DE HARLEY
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            Sin necesidad de instalación. Ábrela en cualquier celular, en cualquier momento — creada para cada modelo Harley.
+          <p className="mt-4 text-muted-foreground md:text-lg">
+            Todas las especificaciones están en el manual, por modelo y año.
           </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            {badges.map((b) => (
-              <div
-                key={b}
-                className="flex items-center gap-2 border border-border bg-panel px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-foreground"
-              >
-                <Check className="h-3.5 w-3.5 text-primary" />
-                {b}
-              </div>
-            ))}
-          </div>
         </div>
-
-        <div className="reveal-on-scroll mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            { src: phoneHomeAsset.url, caption: "La Biblia Harley — todas las categorías en un solo lugar." },
-            { src: phoneEngineAsset.url, caption: "190+ guías a fondo organizadas por tema." },
-            { src: phoneSearchAsset.url, caption: "Búsqueda instantánea de cada solución y consejo." },
-            { src: phoneHeatAsset.url, caption: "Soluciones paso a paso con advertencias claras." },
-          ].map((item) => (
-            <figure key={item.caption} className="flex flex-col items-center">
-              <div className="relative w-full max-w-[260px] rounded-[32px] border-[10px] border-[#1a1a1a] bg-[#0a0a0a] p-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)]">
-                {/* Notch */}
-                <div className="absolute left-1/2 top-0 z-10 h-[18px] w-[90px] -translate-x-1/2 rounded-b-xl bg-[#1a1a1a]" />
-                <img
-                  src={item.src}
-                  alt={item.caption}
-                  loading="lazy"
-                  className="w-full rounded-[22px] object-contain"
-                />
-              </div>
-              <figcaption className="mt-5 px-2 text-center text-sm leading-relaxed text-muted-foreground">
-                {item.caption}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-
-        <div className="reveal-on-scroll mt-10 flex justify-center">
-          <a href="#pricing" className="button-cta">
-            Obtener la app + el búnker
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-function ComparisonSection() {
-  const rows = [
-    ["Sesión de diagnóstico básico", "US$ 150+", "US$ 0 después de descargar"],
-    ["Ajuste de primaria", "US$ 120", "Hazlo tú mismo"],
-    ["Reparación de levas / tensores", "US$ 1.800+", "Repuestos + guía paso a paso"],
-    ["Compra compulsiva de herramientas", "US$ 2.000+ con el tiempo", "Compra solo lo necesario"],
-  ];
-
-  return (
-    <section className="border-b border-border py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="reveal-on-scroll max-w-3xl">
-          <Eyebrow>Perspectiva de costos</Eyebrow>
-          <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            UNA PEQUEÑA COMPRA DIGITAL PUEDE AHORRARTE MILES EN MALOS HÁBITOS DE TALLER.
-          </h2>
-        </div>
-
-        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-          <div className="reveal-on-scroll panel overflow-hidden">
-            <div className="grid grid-cols-3 border-b border-border bg-contrast text-[11px] uppercase tracking-[0.25em] text-contrast-foreground">
-              <div className="px-5 py-4 font-mono">Trabajo</div>
-              <div className="px-5 py-4 font-mono">Concesionario</div>
-              <div className="px-5 py-4 font-mono">Ruta del Búnker</div>
-            </div>
-            {rows.map((row) => (
-              <div key={row[0]} className="grid grid-cols-3 border-b border-border px-0 last:border-b-0">
-                <div className="bg-background px-5 py-5 text-sm text-foreground">{row[0]}</div>
-                <div className="bg-panel px-5 py-5 text-sm text-muted-foreground line-through">{row[1]}</div>
-                <div className="bg-background px-5 py-5 text-sm font-medium text-primary">{row[2]}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="reveal-on-scroll panel p-6">
-            <div className="stat-label">Potencial de ahorro estimado</div>
-            <div className="mt-3 font-headline text-7xl leading-none text-primary">US$ 3,4K+</div>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Para muchos dueños, evitar una o dos visitas al concesionario ya cubre de sobra toda la compra.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function useCountdown(minutes: number) {
-  const [secondsLeft, setSecondsLeft] = useState(minutes * 60);
-  useEffect(() => {
-    const key = `pricingCountdownEnd-${minutes}m-v2`;
-    let end = Number(localStorage.getItem(key));
-    if (!end || end < Date.now()) {
-      end = Date.now() + minutes * 60 * 1000;
-      localStorage.setItem(key, String(end));
-    }
-    const tick = () => {
-      const diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      setSecondsLeft(diff);
-      if (diff === 0) {
-        const next = Date.now() + minutes * 60 * 1000;
-        localStorage.setItem(key, String(next));
-        end = next;
-      }
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [minutes]);
-  const h = Math.floor(secondsLeft / 3600);
-  const m = Math.floor((secondsLeft % 3600) / 60);
-  const s = secondsLeft % 60;
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(h)}:${pad(m)}:${pad(s)}`;
-}
-
-function PricingSection() {
-  const countdown = useCountdown(3);
-  const geo = useGeo();
-  // Preço grande na moeda local (aproximado); US$ pequeno embaixo. Sem moeda local -> US$.
-  const priceView = (old: number, usd: number): { oldPrice: string; sym: string; priceWhole: string; priceCents: string; usdNote: string | null } => {
-    const loc = geo.localParts(usd);
-    const oldLoc = geo.localParts(old);
-    const u = fmtUsd(usd);
-    return loc && oldLoc
-      ? { oldPrice: `${oldLoc.sym} ${oldLoc.value}`, sym: loc.sym, priceWhole: loc.value, priceCents: "", usdNote: `${u.full} · pagas en tu moneda al cambio del día` }
-      : { oldPrice: fmtUsd(old).full, sym: "US$", priceWhole: u.whole, priceCents: u.cents, usdNote: null };
-  };
-  const tiers: { id: string; label: string; badge?: string; name: string; oldPrice: string; sym: string; priceWhole: string; priceCents: string; usdNote: string | null; tagline: string; features: { icon: string; text: string }[]; cta: string; href: string; featured: boolean }[] = [
-    {
-      id: "app",
-      label: "SOLO LA APP",
-      name: "LA APP",
-      ...priceView(OLD_PRICES.app, PRICES.app[geo.tier]),
-      tagline: "190+ GUÍAS EN TU BOLSILLO",
-      features: [
-        { icon: "zap", text: "Acceso completo a la app Harley" },
-        { icon: "infinity", text: "190+ guías detalladas a fondo" },
-        { icon: "download", text: "Funciona en cualquier celular — sin instalar" },
-        { icon: "shield", text: "Garantía de 7 días" },
-      ],
-      cta: "OBTENER LA APP",
-      href: CHECKOUT.app[geo.tier],
-      featured: false,
-    },
-    {
-      id: "book",
-      label: "SOLO EL LIBRO",
-      name: "EL MANUAL",
-      ...priceView(OLD_PRICES.book, PRICES.book[geo.tier]),
-      tagline: "EL LIBRO DIGITAL COMPLETO",
-      features: [
-        { icon: "download", text: "Manual digital completo" },
-        { icon: "infinity", text: "Acceso de por vida" },
-        { icon: "zap", text: "Descarga inmediata" },
-        { icon: "shield", text: "Garantía de 7 días" },
-      ],
-      cta: "OBTENER EL LIBRO",
-      href: CHECKOUT.book[geo.tier],
-      featured: false,
-    },
-    {
-      id: "bundle",
-      label: "EL PRECIO ESPECIAL TERMINA EN",
-      badge: "MÁS VENDIDO",
-      name: "LIBRO + APP",
-      ...priceView(OLD_PRICES.bundle, PRICES.bundle[geo.tier]),
-      tagline: "OFERTA ESPECIAL — SOLO POR HOY",
-      features: [
-        { icon: "download", text: "Manual digital completo" },
-        { icon: "zap", text: "Acceso completo a la app Harley" },
-        { icon: "infinity", text: "Acceso de por vida y actualizaciones gratis" },
-        { icon: "shield", text: "Garantía incondicional de 7 días" },
-      ],
-      cta: "DESBLOQUEAR EL PAQUETE COMPLETO",
-      href: CHECKOUT.bundle[geo.tier],
-      featured: true,
-    },
-  ];
-
-  return (
-    <section id="pricing" className="border-b border-border py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="reveal-on-scroll grid gap-6 lg:grid-cols-3 lg:items-stretch">
-          {tiers.map((tier) => {
-            const featured = tier.featured;
-            return (
-              <article
-                key={tier.id}
-                className={
-                  featured
-                    ? "relative flex flex-col overflow-hidden bg-[oklch(0.68_0.2_45)] text-white shadow-[0_30px_80px_-20px_oklch(0.68_0.2_45_/_0.55)]"
-                    : "panel relative flex flex-col overflow-hidden bg-panel"
-                }
-              >
-                {featured ? (
-                  <div className="bg-[oklch(0.68_0.2_45)] px-6 pt-6 text-center">
-                    <div className="mx-auto max-w-[240px] border border-white/30 px-4 py-3">
-                      <div className="font-mono text-[10px] font-bold uppercase tracking-[0.28em] text-white">
-                        {tier.label}
-                      </div>
-                      <div className="mt-1 font-headline text-3xl tabular-nums tracking-[0.1em] text-white">
-                        <Clock className="mx-auto mb-1 h-5 w-5" />
-                        {countdown}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={
-                      featured
-                        ? "border-b-2 border-white/30 px-6 py-5 text-center font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-white"
-                        : "border-b border-border bg-[#1a1a1a] px-6 py-5 text-center font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-[oklch(0.68_0.2_45)]"
-                    }
-                  >
-                    {tier.label}
-                  </div>
-                )}
-
-                <div className="flex flex-1 flex-col items-center text-center px-6 py-7">
-                  {featured && tier.badge ? (
-                    <div className="mb-3 inline-block bg-white px-4 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-black">
-                      {tier.badge}
-                    </div>
-                  ) : null}
-
-                  <div
-                    className={
-                      featured
-                        ? "font-headline text-2xl leading-none text-white"
-                        : "font-headline text-2xl leading-none text-white"
-                    }
-                  >
-                    {tier.name}
-                  </div>
-
-                  <div
-                    className={
-                      featured
-                        ? "mt-3 font-mono text-sm text-white/70 line-through"
-                        : "mt-3 font-mono text-sm text-muted-foreground line-through"
-                    }
-                  >
-                    {tier.oldPrice}
-                  </div>
-
-                  <div className="mt-2 flex items-start justify-center gap-1">
-                    <span
-                      className={
-                        featured
-                          ? "mt-2 font-mono text-base text-white"
-                          : "mt-2 font-mono text-base text-black"
-                      }
-                    >
-                      {tier.sym}
-                    </span>
-                    <span
-                      className={
-                        (tier.priceWhole.length > 5
-                          ? "font-headline text-5xl leading-none md:text-6xl "
-                          : tier.priceWhole.length > 3
-                            ? "font-headline text-6xl leading-none md:text-7xl "
-                            : "font-headline text-7xl leading-none md:text-8xl ") +
-                        (featured ? "text-white" : "text-black")
-                      }
-                    >
-                      {tier.priceWhole}
-                    </span>
-                    <span
-                      className={
-                        featured
-                          ? "mt-2 font-mono text-lg text-white"
-                          : "mt-2 font-mono text-lg text-black"
-                      }
-                    >
-                      {tier.priceCents}
-                    </span>
-                  </div>
-
-                  <div
-                    className={
-                      featured
-                        ? "mt-3 font-mono text-[11px] font-bold uppercase tracking-[0.24em] text-white"
-                        : "mt-3 font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground"
-                    }
-                  >
-                    {tier.tagline}
-                  </div>
-
-                  {tier.usdNote ? (
-                    <div className={featured ? "mt-2 font-mono text-xs text-white/80" : "mt-2 font-mono text-xs text-muted-foreground"}>
-                      {tier.usdNote}
-                    </div>
-                  ) : null}
-
-                  <ul className="mt-6 flex-1 space-y-3 text-left w-full">
-                    {tier.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center gap-3 text-sm"
-                      >
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-[oklch(0.68_0.2_45)]">
-                          {feature.icon === "zap" && <Zap className="h-4 w-4 text-white" />}
-                          {feature.icon === "download" && <Download className="h-4 w-4 text-white" />}
-                          {feature.icon === "infinity" && <Infinity className="h-4 w-4 text-white" />}
-                          {feature.icon === "shield" && <ShieldCheck className="h-4 w-4 text-white" />}
-                        </span>
-                        <span className={featured ? "text-white" : "text-foreground"}>
-                          {feature.text}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <a
-                    href={tier.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={
-                      featured
-                        ? "mt-8 inline-flex w-full items-center justify-center gap-2 bg-[oklch(0.55_0.22_45)] px-5 py-4 font-headline text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-[oklch(0.5_0.22_45)]"
-                        : "mt-8 inline-flex w-full items-center justify-center gap-2 border border-[oklch(0.68_0.2_45)] bg-transparent px-5 py-4 font-headline text-sm font-bold uppercase tracking-[0.12em] text-[oklch(0.68_0.2_45)] transition hover:bg-[oklch(0.68_0.2_45)] hover:text-white"
-                    }
-                  >
-                    <Lock className="h-4 w-4" />
-                    {tier.cta}
-                  </a>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      name: "Javier R.",
-      city: "Monterrey, MX",
-      initials: "JR",
-      photo: t1Asset.url,
-      rating: 5,
-      text: "Me ahorró US$ 340 solo en el ajuste de la primaria. Las tablas de torque por sí solas ya valen mucho más de lo que cuesta.",
-    },
-    {
-      name: "Andrés P.",
-      city: "Medellín, CO",
-      initials: "AP",
-      photo: t2Asset.url,
-      rating: 5,
-      text: "Por fin un manual que te habla como mecánico y no como abogado. Directo al grano y sin vueltas.",
-    },
-    {
-      name: "Martín G.",
-      city: "Córdoba, AR",
-      initials: "MG",
-      photo: t3Asset.url,
-      rating: 5,
-      text: "Usé la guía de diagnóstico para resolver una luz de check engine por la que el concesionario me quería cobrar US$ 180 solo por escanear. Lo solucioné en 20 minutos.",
-    },
-    {
-      name: "Carlos V.",
-      city: "Santiago, CL",
-      initials: "CV",
-      photo: t4Asset.url,
-      rating: 5,
-      text: "La guía de sustitución de herramientas me salvó de gastar US$ 400 en herramientas especiales que no necesitaba. Una joya para el garaje.",
-    },
-    {
-      name: "Diego M.",
-      city: "Lima, PE",
-      initials: "DM",
-      photo: t5Asset.url,
-      rating: 5,
-      text: "No soy mecánico profesional, pero esto me dio la seguridad para hacer yo mismo la revisión de los tensores de distribución a los 40.000 km. Pasos claros, sin relleno.",
-    },
-    {
-      name: "Fernando L.",
-      city: "Guadalajara, MX",
-      initials: "FL",
-      photo: t6Asset.url,
-      rating: 5,
-      text: "Los mejores US$ 42,50 que he invertido en mi moto. Ya lo usé tres veces en el primer mes. Se paga solo rapidísimo.",
-    },
-  ];
-
-  return (
-    <section className="border-b border-border bg-panel py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="reveal-on-scroll mx-auto max-w-3xl text-center">
-          <Eyebrow>Historias de compradores</Eyebrow>
-          <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            DUEÑOS REALES. HERRAMIENTAS REALES. AHORROS REALES.
-          </h2>
-        </div>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <article
-              key={t.name}
-              className="reveal-on-scroll panel flex flex-col p-6"
-            >
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12 border border-border">
-                  <AvatarImage src={t.photo} alt={t.name} className="object-cover" />
-                  <AvatarFallback className="bg-contrast text-contrast-foreground font-headline text-sm">
-                    {t.initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="font-headline text-base leading-none text-foreground">
-                    {t.name}
-                  </div>
-                  <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                    {t.city}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-3 flex gap-0.5">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-3.5 w-3.5 fill-primary text-primary"
-                  />
+        <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
+          {sixThings.map(({ icon: Icon, title, items }) => (
+            <div key={title} className="rounded-sm border border-border bg-card/60 p-6">
+              <Icon className="h-7 w-7 text-ember" />
+              <h3 className="mt-4 font-display text-xl font-bold uppercase tracking-wide">{title}</h3>
+              <ul className="mt-3 space-y-2">
+                {items.map((item) => (
+                  <li key={item} className="flex gap-2 text-muted-foreground">
+                    <span className="text-ember">·</span>
+                    <span>{item}</span>
+                  </li>
                 ))}
-              </div>
-
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                "{t.text}"
-              </p>
-            </article>
+              </ul>
+            </div>
           ))}
         </div>
+        <p className="mt-8 text-center text-ember">
+          Las especificaciones exactas de tu modelo y año están en el manual.
+        </p>
       </div>
     </section>
   );
 }
 
-function FAQSection() {
-  const faqs = [
-    {
-      question: "¿Cubre mi modelo de Harley?",
-      answer:
-        "El paquete está armado sobre las plataformas que más tienen los motociclistas: familias Twin Cam, Milwaukee-Eight y Sportster, con referencias organizadas para el uso práctico en el garaje y no con lenguaje de catálogo.",
-    },
-    {
-      question: "¿Esto es solo para mecánicos profesionales?",
-      answer:
-        "No. Es para dueños que quieren información sólida y confiable. Algunos trabajos son sencillos para principiantes y otros no; el material está diseñado para ayudarte a notar la diferencia antes de desarmar.",
-    },
-    {
-      question: "¿El material es físico o digital?",
-      answer:
-        "Digital. Obtienes acceso inmediato después de la compra y puedes leerlo en tu celular, tablet o imprimir las páginas que necesites para tenerlas en el banco de trabajo.",
-    },
-    {
-      question: "¿Qué pasa si no tengo todas las herramientas especiales?",
-      answer:
-        "Exactamente por eso existe la guía de sustitución. Te ayuda a identificar qué se puede reemplazar, qué se puede improvisar de forma segura y qué herramienta vale la pena comprar de verdad.",
-    },
+const modules = [
+  { icon: Zap, n: "01", title: "Motor V-Twin", text: "Cuidados específicos para el corazón de tu Harley." },
+  { icon: Droplet, n: "02", title: "Cambio de aceite correcto", text: "Tipo, intervalo y la técnica que pocos conocen." },
+  { icon: Cog, n: "03", title: "Mantenimiento eléctrico", text: "Diagnóstico y prevención de fallas eléctricas." },
+  { icon: Gauge, n: "04", title: "Suspensión y llantas", text: "Presión, balanceo y cambio en el momento justo." },
+  { icon: Battery, n: "05", title: "Cuidado de la batería", text: "Cómo hacer que tu batería dure el doble." },
+  { icon: TriangleAlert, n: "06", title: "Errores fatales", text: "Los 7 errores que le quitan la mitad de la vida a tu moto." },
+  { icon: Sparkles, n: "07", title: "Preservación premium", text: "Técnicas de detallado y protección." },
+  {
+    icon: ShieldCheck,
+    n: "08",
+    title: "Evita el desgaste prematuro",
+    text: "El ritual de quienes mantienen su Harley como nueva por décadas.",
+  },
+];
+
+function ContentSection() {
+  return (
+    <Section id="content" className="bg-background">
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+        <div className="relative">
+          <div className="absolute inset-0 -z-10 bg-ember/20 blur-[120px]" />
+          <img
+            src={manualMockup}
+            alt="Portada del manual"
+            loading="lazy"
+            width={1024}
+            height={1280}
+            className="mx-auto w-full max-w-md drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <div className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.3em] text-ember">
+            <span className="h-px w-8 bg-ember" />
+            Arsenal completo
+          </div>
+          <h2 className="mb-4 font-display text-4xl font-bold leading-[0.95] md:text-5xl">Todo lo que trae el manual</h2>
+          <p className="mb-10 text-muted-foreground md:text-lg">
+            8 módulos directos al grano. Cada ficha técnica resume años de taller, miles de kilómetros y lo que los
+            talleres no quieren que sepas.
+          </p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {modules.map((m) => (
+              <div
+                key={m.title}
+                className="group flex items-start gap-4 rounded-sm border border-border bg-card/50 p-4 transition hover:border-ember/50 hover:bg-card"
+              >
+                <div className="font-display text-2xl font-bold text-ember/40 transition group-hover:text-ember">
+                  {m.n}
+                </div>
+                <div className="flex-1">
+                  <div className="mb-1 flex items-center gap-2">
+                    <m.icon className="h-4 w-4 text-ember" />
+                    <h4 className="font-display text-sm font-bold uppercase tracking-wider">{m.title}</h4>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{m.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function CtaStrip() {
+  return (
+    <section className="bg-background py-10 md:py-14">
+      <div className="container mx-auto flex justify-center px-4 md:px-6">
+        <button
+          onClick={scrollToOffer}
+          className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm gradient-ember px-8 py-5 font-display text-lg font-bold uppercase tracking-wider text-background shadow-glow transition hover:scale-105"
+        >
+          Quiero mi paquete ahora
+          <Flame className="h-5 w-5 transition group-hover:translate-x-1" />
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function AppSection() {
+  const screens = [
+    { img: phoneHomeAsset.url, caption: "La Biblia Harley — todas las categorías en un solo lugar." },
+    { img: phoneEngineAsset.url, caption: "190+ guías a fondo organizadas por tema." },
+    { img: phoneSearchAsset.url, caption: "Búsqueda instantánea de cada solución y consejo." },
+    { img: phoneHeatAsset.url, caption: "Soluciones paso a paso con advertencias claras." },
   ];
 
-  const [openItem, setOpenItem] = useState<number>(0);
-
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto max-w-4xl px-4 md:px-6">
-        <div className="reveal-on-scroll text-center">
-          <Eyebrow>Preguntas antes de comprar</Eyebrow>
-          <h2 className="font-headline text-4xl leading-[0.92] md:text-6xl">
-            RESPUESTAS DIRECTAS ANTES DE TU COMPRA.
-          </h2>
-        </div>
-
-        <div className="reveal-on-scroll mt-10 panel overflow-hidden">
-          {faqs.map((faq, index) => {
-            const isOpen = openItem === index;
-
-            return (
-              <button
-                key={faq.question}
-                type="button"
-                onClick={() => setOpenItem(isOpen ? -1 : index)}
-                className="block w-full border-b border-border px-5 py-5 text-left last:border-b-0"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-headline text-xl leading-tight text-foreground md:text-2xl">
-                    {faq.question}
-                  </span>
-                  {isOpen ? (
-                    <Minus className="h-5 w-5 shrink-0 text-primary" />
-                  ) : (
-                    <Plus className="h-5 w-5 shrink-0 text-primary" />
-                  )}
-                </div>
-                {isOpen ? (
-                  <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
-                ) : null}
-              </button>
-            );
-          })}
-        </div>
+    <Section id="app" className="relative bg-background">
+      <div className="absolute inset-x-0 top-1/3 -z-10 h-80 bg-ember/10 blur-[140px]" />
+      <SectionTitle
+        eyebrow="Bono incluido"
+        title="La app definitiva para dueños de Harley"
+        subtitle="No hay que instalar nada. Ábrela en cualquier celular, cuando quieras — hecha para todos los modelos Harley."
+      />
+      <div className="mx-auto mb-14 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {["Sin instalar nada", "190+ temas", "Funciona en cualquier celular", "Todos los modelos Harley"].map((t) => (
+          <div key={t} className="flex items-center gap-3 rounded-sm border border-border bg-card/60 px-4 py-3">
+            <Check className="h-4 w-4 shrink-0 text-ember" />
+            <span className="font-display text-xs font-bold uppercase tracking-wider">{t}</span>
+          </div>
+        ))}
       </div>
-    </section>
+      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {screens.map((s) => (
+          <div key={s.caption} className="group flex flex-col items-center text-center">
+            <div className="relative w-full">
+              <div className="absolute inset-x-6 bottom-2 -z-10 h-12 rounded-full bg-ember/30 blur-2xl transition group-hover:bg-ember/50" />
+              <div className="relative mx-auto w-full max-w-[260px] rounded-[32px] border-[10px] border-[#1a1a1a] bg-[#0a0a0a] p-1 drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)] transition duration-500 group-hover:-translate-y-2">
+                <div className="absolute left-1/2 top-0 z-10 h-[18px] w-[90px] -translate-x-1/2 rounded-b-xl bg-[#1a1a1a]" />
+                <img src={s.img} alt={s.caption} loading="lazy" className="w-full rounded-[22px] object-contain" />
+              </div>
+            </div>
+            <p className="mt-6 max-w-[240px] text-sm font-medium text-muted-foreground">{s.caption}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
   );
 }
 
-function MinimalFooter() {
+const testimonials = [
+  {
+    name: "Javier R.",
+    role: "Monterrey, N.L.",
+    img: t1Asset.url,
+    text: "Me ahorré una lana solo por dejar de cometer un error sencillo que llevaba años haciendo. El manual se paga solo cien veces.",
+  },
+  {
+    name: "Ricardo M.",
+    role: "Ciudad de México",
+    img: t4Asset.url,
+    text: "Mi Harley quedó mucho más confiable después de aplicar los consejos del manual. Otro sonido, otra manera de rodar.",
+  },
+  {
+    name: "Fernando L.",
+    role: "Guadalajara, Jal.",
+    img: t6Asset.url,
+    text: "Directo al grano, sin relleno y muy útil. Es justo lo que le faltaba a quien se toma en serio su moto.",
+  },
+];
+
+function Testimonials() {
   return (
-    <footer className="border-t border-border bg-panel py-6">
-      <div className="container mx-auto flex flex-col gap-3 px-4 md:flex-row md:items-center md:justify-between md:px-6">
-        <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-          Producto digital técnico para dueños de Harley • Publicación independiente no afiliada a Harley-Davidson
+    <Section id="testimonials" className="brushed-steel grain">
+      <SectionTitle eyebrow="Hermandad del camino" title="Quien lo lee nunca vuelve a ver su Harley igual" />
+      <div className="grid gap-6 md:grid-cols-3">
+        {testimonials.map((t) => (
+          <div
+            key={t.name}
+            className="flex flex-col rounded-sm border border-border bg-card p-7 transition hover:border-ember/60 hover:shadow-card"
+          >
+            <div className="mb-4 flex gap-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-ember text-ember" />
+              ))}
+            </div>
+            <p className="mb-6 flex-1 text-sm leading-relaxed text-foreground/90 md:text-base">"{t.text}"</p>
+            <div className="flex items-center gap-4 border-t border-border pt-5">
+              <img
+                src={t.img}
+                alt={t.name}
+                loading="lazy"
+                width={64}
+                height={64}
+                className="h-14 w-14 rounded-full object-cover ring-2 ring-ember/40"
+              />
+              <div>
+                <div className="font-display text-sm font-bold uppercase tracking-wider">{t.name}</div>
+                <div className="text-xs text-muted-foreground">{t.role}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function Countdown() {
+  const [secondsLeft, setSecondsLeft] = useState(180);
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+    const id = setInterval(() => setSecondsLeft((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, [secondsLeft]);
+  const mm = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
+  const ss = String(secondsLeft % 60).padStart(2, "0");
+  const urgent = secondsLeft <= 20;
+
+  return (
+    <div className="relative border-b border-ember/30 bg-card px-4 py-5 text-center">
+      <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-ember/10 to-transparent" />
+      <div className="relative">
+        <div
+          className={`mb-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.3em] ${urgent ? "text-destructive" : "text-ember"}`}
+        >
+          <Timer className="h-4 w-4" />
+          La oferta termina en
         </div>
-        <div className="flex gap-5 font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-          <a href="#">Términos</a>
-          <a href="#">Privacidad</a>
-          <a href="#">Soporte</a>
+        <div
+          className={`font-display text-5xl font-bold tabular-nums leading-none tracking-tight md:text-6xl ${urgent ? "text-destructive" : "text-foreground"}`}
+        >
+          {mm}:{ss}
+        </div>
+        <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+          Minutos y segundos
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** "1,580" — separador de milhar do México */
+function mxn(n: number) {
+  return n.toLocaleString("es-MX");
+}
+
+function OfferSection() {
+  const geo = useGeo("MX");
+  const usd = PRICES.bundle.a;
+  const sale = geo.localValue(usd) ?? Math.round(usd * 18.5);
+  const original = geo.localValue(usd * 2) ?? Math.round(usd * 2 * 18.5);
+  const features = [
+    { icon: InfinityIcon, t: "Acceso de por vida al libro + la app" },
+    { icon: Download, t: "Actualizaciones futuras gratis" },
+    { icon: Zap, t: "Descarga inmediata después de la compra" },
+    { icon: ShieldCheck, t: "Garantía incondicional de 7 días" },
+  ];
+
+  return (
+    <Section id="offer" className="relative bg-background">
+      <div className="absolute inset-x-0 top-1/2 -z-10 h-96 -translate-y-1/2 bg-ember/15 blur-[140px]" />
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-6 text-center">
+          <div className="inline-flex items-center gap-2 rounded-sm border border-ember/40 bg-ember/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-ember">
+            <Flame className="h-4 w-4" /> Oferta por tiempo limitado
+          </div>
+        </div>
+        <h2 className="text-center font-display text-4xl font-bold leading-[0.95] md:text-6xl">
+          Oferta especial <span className="text-ember">por tiempo limitado</span>
+        </h2>
+
+        <div className="mt-12 flex justify-center">
+          <div className="w-full max-w-lg overflow-hidden rounded-md border-2 border-ember/60 bg-card shadow-glow ring-1 ring-ember/30">
+            <Countdown />
+
+            <div className="relative border-b border-ember/30 bg-ember px-6 py-4 text-center">
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+              <div className="relative font-display text-2xl font-bold uppercase tracking-wider text-background md:text-3xl">
+                Combo libro + app
+              </div>
+              <div className="relative mt-1 text-sm font-semibold uppercase tracking-widest text-background/90">
+                Te llevas los dos. Pagas uno.
+              </div>
+            </div>
+
+            <div className="border-b border-border gradient-steel p-8 text-center">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-sm border border-ember/40 bg-background/40 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-ember">
+                Paquete completo incluido
+              </div>
+              <div className="mb-3 font-display text-2xl font-bold uppercase tracking-widest text-muted-foreground line-through md:text-3xl">
+                ${mxn(original)} MXN
+              </div>
+              <div className="mb-1 inline-flex items-center gap-2 rounded-full bg-ember/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-ember">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-ember" />
+                Ahorras ${mxn(original - sale)}
+              </div>
+              <div className="flex items-end justify-center gap-2">
+                <span className="font-display text-2xl text-ember">$</span>
+                <span className="font-display text-7xl font-bold leading-none md:text-8xl">{mxn(sale)}</span>
+                <span className="mb-2 font-display text-xl text-muted-foreground">MXN</span>
+              </div>
+              <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
+                Pago único · Sin suscripción
+              </div>
+              <div className="mt-1 text-[11px] text-muted-foreground">
+                ≈ {fmtUsd(usd).full} · el monto exacto en pesos lo ves en la página de pago
+              </div>
+            </div>
+
+            <div className="p-8 md:p-10">
+              <ul className="mb-8 space-y-4">
+                {features.map((f) => (
+                  <li key={f.t} className="flex items-center gap-3 text-foreground/90">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-ember/15 text-ember">
+                      <f.icon className="h-4 w-4" />
+                    </div>
+                    <span className="font-medium">{f.t}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={CHECKOUT.bundle.a}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group glow-pulse relative flex w-full items-center justify-center gap-3 rounded-sm gradient-ember px-8 py-6 font-display text-xl font-bold uppercase tracking-widest text-background transition hover:scale-[1.02]"
+              >
+                <Lock className="h-5 w-5" />
+                Desbloquear mi combo
+              </a>
+              <div className="mt-5 flex items-center justify-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+                <ShieldCheck className="h-4 w-4 text-ember" />
+                Compra 100% segura · Acceso inmediato
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+const benefits = [
+  {
+    icon: TriangleAlert,
+    title: "Evita problemas caros",
+    text: "Detecta las señales de alerta antes de que se conviertan en cuentas de taller.",
+  },
+  { icon: Flame, title: "Errores que destruyen motores", text: "Los hábitos silenciosos que matan tu V-Twin antes de tiempo." },
+  { icon: Wrench, title: "Mantenimiento preventivo sencillo", text: "Rutinas que cualquier dueño puede hacer en su cochera." },
+  { icon: Timer, title: "Más durabilidad", text: "Triplica la vida de los componentes críticos." },
+];
+
+function Benefits() {
+  return (
+    <Section id="benefits" className="brushed-steel grain">
+      <SectionTitle
+        eyebrow="Lo que está en juego"
+        title="Lo que ganas con este manual"
+        subtitle="Conocimiento probado por veteranos del camino. El resultado: una máquina que sigue fuerte por décadas."
+      />
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {benefits.map((b, i) => (
+          <div
+            key={b.title}
+            className="group relative overflow-hidden rounded-sm border border-border bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-ember/60 hover:shadow-glow"
+          >
+            <div className="absolute -right-8 -top-8 font-display text-7xl font-bold text-ember/5 transition group-hover:text-ember/10">
+              {String(i + 1).padStart(2, "0")}
+            </div>
+            <div className="relative">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-sm border border-ember/30 bg-ember/10 text-ember transition group-hover:bg-ember group-hover:text-background">
+                <b.icon className="h-6 w-6" />
+              </div>
+              <h3 className="mb-2 font-display text-lg font-bold">{b.title}</h3>
+              <p className="text-sm text-muted-foreground">{b.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function Guarantee() {
+  return (
+    <Section id="guarantee" className="bg-background">
+      <div className="brushed-steel mx-auto flex max-w-4xl flex-col items-center gap-10 rounded-md border border-border p-10 md:flex-row md:p-14">
+        <div className="relative shrink-0">
+          <div className="absolute inset-0 -z-10 rounded-full bg-ember/30 blur-2xl" />
+          <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-ember bg-background">
+            <div className="text-center">
+              <div className="font-display text-4xl font-bold leading-none text-ember">7</div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-foreground">Días</div>
+            </div>
+          </div>
+        </div>
+        <div className="text-center md:text-left">
+          <h3 className="mb-3 font-display text-3xl font-bold md:text-4xl">Garantía total de 7 días</h3>
+          <p className="text-muted-foreground md:text-lg">
+            Lee el manual, aplica los consejos y, si no te sirve, te devolvemos el 100% de tu dinero. Sin preguntas y sin
+            trámites. Todo el riesgo es nuestro.
+          </p>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+const faqs = [
+  {
+    q: "¿Sirve para cualquier modelo de Harley?",
+    a: "Sí. El manual cubre Sportster, Softail, Touring, Dyna y Street — los principios de longevidad aplican a cualquier V-Twin de Harley.",
+  },
+  {
+    q: "¿El manual es físico o digital?",
+    a: "100% digital. Lo abres en tu celular, tablet o computadora en cuanto compras — sin esperar envíos.",
+  },
+  {
+    q: "¿El acceso es inmediato?",
+    a: "Sí. En cuanto se confirma el pago, el acceso llega a tu correo.",
+  },
+  {
+    q: "¿Necesito saber de mecánica?",
+    a: "No. Todo está explicado en español sencillo. Hasta un principiante puede aplicar las técnicas.",
+  },
+  {
+    q: "¿Puedo verlo en mi celular?",
+    a: "Sí. El manual se adapta a cualquier dispositivo — llévalo contigo a la cochera.",
+  },
+  {
+    q: "¿Cuánto pago en pesos?",
+    a: "El precio en pesos de esta página es aproximado y cambia con el tipo de cambio del día. El monto exacto aparece en la página de pago antes de que confirmes.",
+  },
+];
+
+function Faq() {
+  const [open, setOpen] = useState<number | null>(0);
+
+  return (
+    <Section id="faq" className="bg-background">
+      <SectionTitle eyebrow="Preguntas frecuentes" title="Antes de salir a rodar" />
+      <div className="mx-auto max-w-3xl space-y-3">
+        {faqs.map((f, i) => {
+          const isOpen = open === i;
+          return (
+            <div key={f.q} className="overflow-hidden rounded-sm border border-border bg-card">
+              <button
+                onClick={() => setOpen(isOpen ? null : i)}
+                className="flex w-full items-center justify-between gap-4 p-5 text-left transition hover:bg-secondary"
+              >
+                <span className="font-display text-base font-bold uppercase tracking-wider md:text-lg">{f.q}</span>
+                <ChevronDown className={`h-5 w-5 shrink-0 text-ember transition ${isOpen ? "rotate-180" : ""}`} />
+              </button>
+              <div className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                <div className="overflow-hidden">
+                  <p className="px-5 pb-5 text-sm text-muted-foreground md:text-base">{f.a}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-border bg-background pb-8 pt-16">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="mb-12 text-center">
+          <div className="mb-3 font-display text-3xl font-bold tracking-wider md:text-5xl">
+            RUEDA MÁS LEJOS. <span className="text-ember">RUEDA MÁS FUERTE.</span>
+          </div>
+          <div className="mx-auto h-px w-24 bg-ember" />
+        </div>
+        <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
+          <Logo small />
+          <nav className="flex flex-wrap justify-center gap-6 text-xs uppercase tracking-widest text-muted-foreground">
+            <a href="#" className="transition hover:text-ember">
+              Términos de uso
+            </a>
+            <a href="#" className="transition hover:text-ember">
+              Aviso de privacidad
+            </a>
+            <a href="#" className="transition hover:text-ember">
+              Contacto
+            </a>
+          </nav>
+        </div>
+        <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground">
+          © {new Date().getFullYear()} Manual de Longevidad Harley · Todos los derechos reservados.
+          <div className="mt-2 text-[10px]">
+            Producto independiente. Sin afiliación con Harley-Davidson Motor Company.
+          </div>
         </div>
       </div>
     </footer>

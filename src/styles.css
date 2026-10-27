@@ -5,81 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "Rajdhani";
-  src: url("https://fonts.gstatic.com/s/rajdhani/v17/LDI2apCSOBg7S-QT7pb0EMOs.ttf") format("truetype");
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Rajdhani";
-  src: url("https://fonts.gstatic.com/s/rajdhani/v17/LDI2apCSOBg7S-QT7pbYF8Os.ttf") format("truetype");
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Rajdhani";
-  src: url("https://fonts.gstatic.com/s/rajdhani/v17/LDI2apCSOBg7S-QT7pa8FsOs.ttf") format("truetype");
+  font-family: "Oswald";
+  src: url("https://fonts.gstatic.com/s/oswald/v53/TK3iWkUHHAIjg752FD8Ghe4.woff2") format("woff2");
   font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Sans";
-  src: url("https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSD6llzAA.ttf") format("truetype");
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Sans";
-  src: url("https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSD2FlzAA.ttf") format("truetype");
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Sans";
-  src: url("https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSDNF5zAA.ttf") format("truetype");
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Sans";
-  src: url("https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSDDV5zAA.ttf") format("truetype");
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Mono";
-  src: url("https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n5ig.ttf") format("truetype");
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Mono";
-  src: url("https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJ8lc.ttf") format("truetype");
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Mono";
-  src: url("https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAO8lc.ttf") format("truetype");
-  font-weight: 600;
   font-display: swap;
 }
 
 @theme inline {
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -99,40 +31,41 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-ember: var(--ember);
+  --color-steel: var(--steel);
 
-  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
-  --font-headline: "Rajdhani", system-ui, sans-serif;
-  --font-display: "Rajdhani", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Oswald", "Impact", system-ui, sans-serif;
+
+  --shadow-glow: 0 0 40px #f665008c, 0 0 80px #f6650040;
+  --shadow-card: 0 20px 60px -20px #000000b3;
 }
 
 :root {
-  --background: oklch(0.84 0.01 260);
-  --foreground: oklch(0.17 0.01 260);
-  --card: oklch(0.9 0.008 260);
-  --card-foreground: oklch(0.17 0.01 260);
-  --popover: oklch(0.94 0.006 260);
-  --popover-foreground: oklch(0.17 0.01 260);
-  --primary: oklch(0.68 0.2 45);
-  --primary-foreground: oklch(0.98 0.01 90);
-  --secondary: oklch(0.8 0.008 260);
-  --secondary-foreground: oklch(0.2 0.01 260);
-  --muted: oklch(0.77 0.008 260);
-  --muted-foreground: oklch(0.43 0.01 260);
-  --accent: oklch(0.68 0.2 45);
-  --accent-foreground: oklch(0.98 0.01 90);
-  --destructive: oklch(0.68 0.2 45);
-  --destructive-foreground: oklch(0.98 0.01 90);
-  --border: oklch(0.56 0.01 260 / 0.55);
-  --input: oklch(0.92 0.006 260);
-  --ring: oklch(0.68 0.2 45);
+  --background: #020101;
+  --foreground: #f8f4f2;
+  --card: #0a0606;
+  --card-foreground: #f8f4f2;
+  --popover: #0a0606;
+  --popover-foreground: #f8f4f2;
+  --primary: #f66500;
+  --primary-foreground: #020101;
+  --secondary: #15100f;
+  --secondary-foreground: #f8f4f2;
+  --muted: #0f0c0c;
+  --muted-foreground: #948e89;
+  --accent: #f66500;
+  --accent-foreground: #020101;
+  --destructive: #ee0f1f;
+  --destructive-foreground: #f5f5f5;
+  --border: #1f1917;
+  --input: #1a1514;
+  --ring: #f66500;
+  --steel: #25201f;
+  --ember: #f66500;
 
-  --panel: oklch(0.9 0.007 260 / 0.82);
-  --panel-strong: oklch(0.96 0.005 260 / 0.92);
-  --contrast: oklch(0.21 0.01 260);
-  --contrast-foreground: oklch(0.95 0.004 260);
-  --metal-gradient: linear-gradient(135deg, rgba(246, 247, 250, 0.95) 0%, rgba(198, 201, 208, 0.88) 20%, rgba(233, 235, 239, 0.92) 42%, rgba(173, 177, 184, 0.95) 66%, rgba(244, 245, 247, 0.94) 100%);
-  --shadow-panel: 0 18px 60px -28px rgba(18, 20, 24, 0.32);
+  --gradient-ember: linear-gradient(135deg, #ff7600, #d93500);
+  --gradient-steel: linear-gradient(180deg, #141110, #020101);
 }
 
 @layer base {
@@ -146,146 +79,62 @@
 
   body {
     min-height: 100vh;
+    background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0) 30%),
-      repeating-linear-gradient(115deg, rgba(255,255,255,0.16) 0 1px, rgba(0,0,0,0) 1px 22px),
-      var(--metal-gradient);
-    background-attachment: fixed;
   }
 
   h1,
   h2,
   h3,
-  h4,
-  .font-headline {
-    font-family: var(--font-headline);
+  h4 {
+    font-family: var(--font-display);
     text-transform: uppercase;
-    letter-spacing: 0;
-    font-weight: 700;
-  }
-
-  a,
-  button {
-    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    letter-spacing: 0.01em;
   }
 }
 
 @layer utilities {
-  .bg-panel {
-    background-color: var(--panel);
+  .gradient-ember {
+    background: var(--gradient-ember);
   }
 
-  .bg-contrast {
-    background-color: var(--contrast);
+  .gradient-steel {
+    background: var(--gradient-steel);
   }
 
-  .text-contrast-foreground {
-    color: var(--contrast-foreground);
-  }
-
-  .panel {
-    border: 1px solid var(--color-border);
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.06)),
-      color-mix(in oklab, var(--panel) 90%, white 10%);
-    box-shadow: var(--shadow-panel);
-    backdrop-filter: blur(6px);
-  }
-
-  .panel-topline {
-    height: 4px;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, var(--color-primary) 18%, var(--color-primary) 82%, transparent);
-  }
-
-  .section-eyebrow {
-    margin-bottom: 1rem;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.26em;
-    color: var(--color-muted-foreground);
-  }
-
-  .button-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    border: 1px solid color-mix(in oklab, var(--color-primary) 70%, black 30%);
-    background: linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 88%, white 12%), color-mix(in oklab, var(--color-primary) 76%, black 24%));
-    color: var(--color-primary-foreground);
-    padding: 1rem 1.35rem;
-    font-family: var(--font-headline);
-    font-size: 1rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    box-shadow: 0 10px 28px -16px color-mix(in oklab, var(--color-primary) 60%, black 40%);
-  }
-
-  .button-cta:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.04);
-  }
-
-  .info-chip {
-    display: flex;
-    min-height: 84px;
-    gap: 0.75rem;
-    border: 1px solid var(--color-border);
-    background: color-mix(in oklab, var(--panel-strong) 92%, white 8%);
-    padding: 1rem;
-    font-size: 0.92rem;
-    line-height: 1.45;
-    color: var(--color-foreground);
-    box-shadow: var(--shadow-panel);
-  }
-
-  .stat-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.24em;
-    color: var(--color-muted-foreground);
-  }
-
-  .stat-value {
-    margin-top: 0.5rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--color-foreground);
-  }
-
-  .hero-metal {
-    background:
-      linear-gradient(90deg, rgba(255,255,255,0.24), rgba(255,255,255,0) 42%),
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 48px),
-      transparent;
-  }
-
-  .grid-floor {
+  .brushed-steel {
+    background-color: #060404;
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    background-size: 38px 38px;
+      repeating-linear-gradient(90deg, #090706 0 1px, transparent 1px 3px),
+      radial-gradient(at top, #15100f, #020101);
   }
 
-  .pricing-shell {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0) 26%),
-      transparent;
+  .grain {
+    position: relative;
   }
 
-  .reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 650ms ease, transform 650ms ease;
+  .grain::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
   }
 
-  .reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+  .glow-pulse {
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 30px #f6650080, 0 0 60px #f6650033;
+  }
+  50% {
+    box-shadow: 0 0 50px #f66500cc, 0 0 100px #f6650066;
   }
 }

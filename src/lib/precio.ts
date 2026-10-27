@@ -73,16 +73,29 @@ export interface Geo {
   tier: Tier;
   local: (usd: number) => string | null; // "≈ MX$ 790" ou null (USD/desconhecido)
   localParts: (usd: number) => { sym: string; value: string } | null;
+  localValue: (usd: number) => number | null; // valor arredondado na moeda local, sem formatação
 }
 
 const CACHE = "geo_precio_v1";
 
-export function useGeo(): Geo {
-  const [country, setCountry] = useState<string | null>(null);
+/** `forceCountry` fixa o país (ex.: "MX" na página só para o México); o câmbio continua a vir da API. */
+export function useGeo(forceCountry?: string): Geo {
+  const [country, setCountry] = useState<string | null>(forceCountry ?? null);
   const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
 
   useEffect(() => {
     let alive = true;
+    if (forceCountry) {
+      fetch("https://open.er-api.com/v6/latest/USD")
+        .then((r) => r.json())
+        .then((j) => {
+          if (alive && j && j.rates) setRates({ ...FALLBACK_RATES, ...j.rates });
+        })
+        .catch(() => {});
+      return () => {
+        alive = false;
+      };
+    }
     try {
       const c = JSON.parse(localStorage.getItem(CACHE) || "null");
       if (c && c.t > Date.now() - 12 * 3600e3) {
@@ -117,19 +130,22 @@ export function useGeo(): Geo {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [forceCountry]);
 
-  const localParts = (usd: number) => {
+  const localValue = (usd: number) => {
     if (!country || !CURRENCY[country]) return null;
-    const [code, sym] = CURRENCY[country];
-    const rate = rates[code];
-    if (!rate) return null;
-    return { sym, value: grp(nice(usd * rate)) };
+    const rate = rates[CURRENCY[country][0]];
+    return rate ? nice(usd * rate) : null;
+  };
+  const localParts = (usd: number) => {
+    const v = localValue(usd);
+    if (v === null || !country) return null;
+    return { sym: CURRENCY[country][1], value: grp(v) };
   };
   const local = (usd: number) => {
     const l = localParts(usd);
     return l ? `≈ ${l.sym} ${l.value}` : null;
   };
 
-  return { country, tier: tierOf(country), local, localParts };
+  return { country, tier: tierOf(country), local, localParts, localValue };
 }

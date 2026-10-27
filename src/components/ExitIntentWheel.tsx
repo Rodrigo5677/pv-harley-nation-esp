@@ -14,7 +14,7 @@ const segments = [
 ];
 
 export default function ExitIntentWheel() {
-  const geo = useGeo();
+  const geo = useGeo("MX");
   const [open, setOpen] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [won, setWon] = useState(false);
@@ -185,7 +185,7 @@ export default function ExitIntentWheel() {
           </h2>
         ) : (
           <h2 className="mb-3 text-center text-3xl md:text-4xl font-black uppercase leading-tight text-white">
-            Ganaste <span className="text-[#F47216]">50% OFF</span> en El Búnker
+            Ganaste <span className="text-[#F47216]">50% OFF</span> en el Manual
           </h2>
         )}
 
@@ -262,7 +262,7 @@ export default function ExitIntentWheel() {
         ) : (
           <>
             <p className="mb-5 text-center text-sm md:text-base text-white/70">
-              El Búnker del Mecánico Harley por solo{" "}
+              El Manual Harley + la App por solo{" "}
               <span className="font-bold text-white">{geo.local(PRICES.wheel[geo.tier]) ? `${geo.local(PRICES.wheel[geo.tier])!.replace("≈ ", "")} (${fmtUsd(PRICES.wheel[geo.tier]).full})` : fmtUsd(PRICES.wheel[geo.tier]).full}</span> — expira
               al cerrar esta página.
             </p>
