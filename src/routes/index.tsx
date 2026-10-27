@@ -301,8 +301,8 @@ function ContentSection() {
             src={manualMockup}
             alt="Portada del manual"
             loading="lazy"
-            width={1024}
-            height={1280}
+            width={1200}
+            height={1900}
             className="mx-auto w-full max-w-md drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
           />
         </div>
