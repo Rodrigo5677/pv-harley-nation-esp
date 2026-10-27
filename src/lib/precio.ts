@@ -9,7 +9,7 @@ export type Plan = "app" | "book" | "bundle" | "wheel";
 export const PRICES: Record<Plan, Record<Tier, number>> = {
   app: { a: 100, b: 100 },
   book: { a: 34.95, b: 29.9 },
-  bundle: { a: 42.5, b: 36.9 },
+  bundle: { a: 45, b: 36.9 },
   wheel: { a: 22.9, b: 22.9 },
 };
 
